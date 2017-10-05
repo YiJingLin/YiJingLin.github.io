@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="src/pure-min.css">
+<link rel="stylesheet" href="src/radar-chart.css">
+<head>
+  <style>
+    body {
+      padding: 20px;
+    }
+    .radar-chart .area {
+      fill-opacity: 0.7;
+    }
+    .radar-chart.focus .area {
+      fill-opacity: 0.3;
+    }
+    .radar-chart.focus .area.focused {
+      fill-opacity: 0.9;
+    }
+    .area.germany, .germany .circle {
+      fill: #FFD700;
+      stroke: none;
+    }
+    .area.argentina, .argentina .circle {
+      fill: #ADD8E6;
+      stroke: none;
+    }
+  </style>
+
+  <script type="text/javascript" src="src/d3.v3.js"></script>
+  <script type="text/javascript" src="src/radar-chart.js"></script>
+
+
+  </head>
+  <body>
+<script type="text/javascript">
+
+  function updateData(chartData){
+    var data = [];
+    var rawdata = []; //preprocessing result storage
+    var chart = RadarChart.chart();
+    
+    //get columns name
+    var columnLabelsArray = []; //columns name array
+    var columnInfo = chartData.columns; //tmp storage for columns info
+    if(columnInfo){
+      for (var i = 0; i < columnInfo.length; i++){
+        columnLabelsArray.push(columnInfo[i].label); //append each columns name together
+      }
+    }
+    rawdata.push(columnLabelsArray);
+    chartData.data.forEach(function(item, i){
+      rawdata.push(item);
+    })
+
+
+  // chartData = c.split("\n").map(function(i){return i.split(",")}) //將csv轉成2-d ary
+  headers = [];
+  rawdata.forEach(function(item, i){ //each row data , item:value & i:index
+    if(i==0){ //row0 is for label
+      headers = item;
+    }else{
+      newSeries = {};
+      item.forEach( function(v, j){
+        if(j==0){
+          newSeries.className = v;
+          newSeries.axes = [];
+        }else{
+          newSeries.axes.push({"axis":[headers[j]], "value": parseFloat(v)});
+        }
+      });
+      data.push(newSeries);
+    }
+  })
+RadarChart.defaultConfig.radius = 3;
+RadarChart.defaultConfig.w = 600;
+RadarChart.defaultConfig.h = 600;
+RadarChart.draw("#chart-container", data);
+function animate(elem,time) {
+    if( !elem) return;
+    var to = elem.offsetTop;
+    var from = window.scrollY;
+    var start = new Date().getTime(),
+        timer = setInterval(function() {
+            var step = Math.min(1,(new Date().getTime()-start)/time);
+            window.scrollTo(0,(from+step*(to-from))+1);
+            if( step == 1){ clearInterval(timer);};
+        },25);
+        window.scrollTo(0,(from+1));
+    }
+
+var divVal = document.getElementById('chart-container');
+animate(divVal,600);
+}
+
+
+var _chartData_={
+  "version" : "1",
+  "rowCount" : 3,
+  "availableRowCount" : 2,
+  "data" : [['user1', 300, 200, 100, 400, 150, 250],
+            ['user2', 130, 100, 140, 200, 150, 500],
+            ['user3',250,240,400,350,250,60]],
+  "columns" : [ {
+  "label" : "dte",
+  "type" : "date",
+  "usage" : "categorical",
+  "format" : {
+    "name" : "DDMMYY",
+    "width" : 8,
+    "precision" : 0,
+    "formatString" : "DDMMYY8"
+  }
+  }, {
+  "label" : "para1",
+  "type" : "number",
+  "usage" : "quantitative",
+  "aggregation" : "sum",
+  "format" : {
+    "name" : "DOLLAR",
+    "width" : 12,
+    "precision" : 0,
+    "formatString" : "BEST12."
+  }
+  }, {
+  "label" : "para2",
+  "type" : "number",
+  "usage" : "quantitative",
+  "aggregation" : "sum",
+  "format" : {
+    "name" : "DOLLAR",
+    "width" : 12,
+    "precision" : 0,
+    "formatString" : "BEST12."
+  }
+  }, {
+  "label" : "para3",
+  "type" : "number",
+  "usage" : "quantitative",
+  "aggregation" : "sum",
+  "format" : {
+    "name" : "BEST",
+    "width" : 12,
+    "precision" : 0,
+    "formatString" : "BEST12."
+  }
+  }, {
+  "label" : "para4",
+  "type" : "number",
+  "usage" : "quantitative",
+  "aggregation" : "sum",
+  "format" : {
+    "name" : "BEST",
+    "width" : 12,
+    "precision" : 0,
+    "formatString" : "BEST12."
+  }
+  }, {
+  "label" : "para5",
+  "type" : "number",
+  "usage" : "quantitative",
+  "aggregation" : "sum",
+  "format" : {
+    "name" : "BEST",
+    "width" : 12,
+    "precision" : 0,
+    "formatString" : "BEST12."
+  }
+  }, {
+  "label" : "para6",
+  "type" : "number",
+  "usage" : "quantitative",
+  "aggregation" : "sum",
+  "format" : {
+    "name" : "BEST",
+    "width" : 12,
+    "precision" : 0,
+    "formatString" : "BEST12."
+  }
+  }]
+};
+
+</script>
+
+<div id="chart-container"></div>
+<script type="text/javascript">
+    updateData(_chartData_);
+  </script>
+
+</body>
+</html>

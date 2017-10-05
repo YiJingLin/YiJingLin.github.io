@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<style>
+
+text {
+  font: 10px sans-serif;
+}
+
+</style>
+</head>
+<body><div id="output_div"></div></body>
+<script>
+  //called by SAS VA
+  function updateData(chartData){
+    console.log(JSON.stringify(chartData));
+    var output_div = document.getElementById('output_div');
+    output_div.innerHTML = JSON.stringify(chartData);
+  }
+  updateData('Hello World!');
+</script>

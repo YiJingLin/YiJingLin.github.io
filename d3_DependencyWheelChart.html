@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+body {
+  font: 10px sans-serif;
+}
+
+svg text{
+  fill:grey;
+  font-size:11px;
+}
+svg .values text{
+  pointer-events:none;
+  stroke-width: 0.5px;
+}
+.groups:hover{
+  cursor:pointer;
+  font-weight:bold;
+}
+</style>
+<body>
+<script src="src/d3.v4.min.js"></script>
+<script src="src/viz.v1.1.0.min.js"></script>
+<script>
+
+
+
+function updateData(chartData){
+  var normalizedData = transform_chartData(chartData);
+  drawChart(normalizedData);
+}
+function transform_chartData(chartData){
+  var result = {};
+  result.data = [];
+  result.colors = {};
+  result.sortOrder = [];
+
+  var datarows = result.data = chartData.data;
+  var tmpName = datarows[0][0];
+
+  for(var i=0;i<datarows.length;i++){
+    if(tmpName != datarows[i][0]){
+      result.sortOrder.push(tmpName);
+      result.colors[tmpName] = getRandomColor();
+      tmpName = datarows[i][0];
+    }
+  }
+  result.colors[tmpName] = getRandomColor();
+  result.sortOrder.push(tmpName);
+  return result;
+}
+function getRandomColor(){
+  var colorID = '#';
+  var tmpCharArray = ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'];
+  for(var i=0;i<6;i++){
+    var tmpNum = Math.floor((Math.random()*16));
+    colorID += tmpCharArray[tmpNum];
+  }
+  return colorID; 
+}
+function drawChart(normalizedData){
+  var ch = viz.ch().data(normalizedData.data)
+      .padding(.01)
+      .innerRadius(430)
+      .outerRadius(450)
+      .duration(1000)
+      .chordOpacity(0.3)
+      .labelPadding(.03)
+        .fill(function(d){ return normalizedData.colors[d];});
+
+  var width=1200, height=1100;
+
+  var svg = d3.select("body").append("svg").attr("height",height).attr("width",width);
+
+  svg.append("g").attr("transform", "translate(600,550)").call(ch);
+
+  // adjust height of frame in bl.ocks.org
+  d3.select(self.frameElement).style("height", height+"px").style("width", width+"px");
+}
+
+//SAS data format
+var _chartData_ = {
+  "version" : "1",
+  "rowCount" : 18,
+  "availableRowCount" : 18,
+  "data" : [ 
+    [ "A","B", 3.00 ], 
+    [ "A","C", 2.02 ], 
+    [ "A","D", 1.70 ], 
+    [ "A","E", 0.08 ], 
+    [ "A","F", 0.20 ], 
+    [ "B","A", 0.74 ], 
+    [ "B","C", 1.26 ], 
+    [ "B","D", 3.14 ], 
+    [ "B","E", 2.45 ], 
+    [ "B","F", 0.54 ], 
+    [ "B","G", 1.58 ], 
+    [ "C","A", 2.11 ], 
+    [ "C","D", 0.17 ], 
+    [ "C","F", 1.56 ], 
+    [ "C","G", 0.05 ], 
+    [ "C","H", 2.31 ], 
+    [ "D","A", 0.59 ], 
+    [ "D","B", 1.52 ], 
+    [ "D","E", 2.66 ], 
+    [ "D","F", 3.00 ], 
+    [ "D","G", 1.57 ], 
+    [ "E","A", 1.05 ], 
+    [ "E","B", 2.01 ], 
+    [ "E","D", 3.21 ], 
+    [ "F","A", 1.47 ],
+    [ "F","B", 0.81 ], 
+    [ "F","C", 2.54 ],
+    [ "F","D", 2.96 ],
+    [ "F","E", 0.83 ], 
+    [ "F","G", 0.15 ], 
+    [ "G","A", 1.64 ], 
+    [ "G","B", 3.04 ],
+    [ "G","D", 1.67 ], 
+    [ "G","F", 2.66 ],
+    [ "H","A", 1.91 ], 
+    [ "H","C", 1.68 ], 
+    [ "H","E", 0.55 ], 
+    [ "H","F", 1.29 ], 
+    [ "H","G", 0.67 ]  
+  ],
+  //each column info : there should be same number as data parameter 
+  "columns" : [ {
+  "label" : "Class",
+  "type" : "date",
+  "usage" : "categorical",
+  "format" : {
+    "name" : "DDMMYY",
+    "width" : 8,
+    "precision" : 0,
+    "formatString" : "DDMMYY8"
+  }
+  }, {
+  "label" : "Class2",
+  "type" : "date",
+  "usage" : "categorical",
+  "format" : {
+    "name" : "DDMMYY",
+    "width" : 8,
+    "precision" : 0,
+    "formatString" : "DDMMYY8"
+  }
+  }, {
+  "label" : "sales",
+  "type" : "number",
+  "usage" : "quantitative",
+  "aggregation" : "sum",
+  "format" : {
+    "name" : "BEST",
+    "width" : 12,
+    "precision" : 0,
+    "formatString" : "BEST12."
+  }
+  } ]
+};
+//data format that D3js Dependency Wheel Chart eat
+// var default_data ={
+//   "data":[
+//     ['Arsenal','Aston Villa',6]
+//     ,['Arsenal','Leicester City',7]
+//     ,['Arsenal','Liverpool',3]
+//     ,['Arsenal','Manchester City',4]
+//     ,['Arsenal','Manchester Utd',5]
+//     ,['Arsenal','Newcastle Utd',2]
+//     ,['Arsenal','Norwich City',2]
+//     ,['Arsenal','Southampton',0]
+//     ,['Arsenal','Stoke City',2]
+//     ,['Arsenal','Sunderland',3]
+//     ,['Arsenal','Swansea City',4]
+//     ,['Aston Villa','Arsenal',0]
+//     ,['Aston Villa','Bournemouth',2]
+//     ,['Aston Villa','Chelsea',0]
+//     ,['Aston Villa','Crystal Palace',2]
+//     ,['Aston Villa','Everton',1]
+//     ,['Aston Villa','Leicester City',3]
+//     ,['Aston Villa','Liverpool',2]
+//     ,['Aston Villa','Norwich City',2]
+//     ,['Aston Villa','Southampton',3]
+//     ,['Aston Villa','Stoke City',1]
+//     ,['Aston Villa','Sunderland',3]
+//     ,['Aston Villa','Swansea City',1]
+//     ,['Aston Villa','Tottenham',1]
+//     ,['Aston Villa','Watford',4]
+//     ,['Aston Villa','West Bromwich',0]
+//     ,['Aston Villa','West Ham Utd',1]
+//     ,['Bournemouth','Aston Villa',2]
+//     ,['Bournemouth','Chelsea',2]
+//     ,['Bournemouth','Crystal Palace',2]
+//     ,['Bournemouth','Everton',4]
+//     ,['Bournemouth','Leicester City',1]
+//     ,['Bournemouth','Liverpool',1]
+//     ,['Bournemouth','Manchester City',1]
+//     ,['Bournemouth','Manchester Utd',3]
+//     ,['Bournemouth','Newcastle Utd',3]
+//     ,['Bournemouth','Norwich City',4]
+//     ,['Bournemouth','Southampton',2]
+//     ,['Bournemouth','Stoke City',2]
+//     ,['Bournemouth','Sunderland',3]
+//     ,['Bournemouth','Swansea City',5]
+//     ,['Bournemouth','West Bromwich',3]
+//     ,['Bournemouth','West Ham Utd',5]
+//     ,['Chelsea','Arsenal',3]
+//     ,['Chelsea','Aston Villa',6]
+//     ,['Chelsea','Bournemouth',4]
+//     ,['Chelsea','Crystal Palace',4]
+//     ,['Chelsea','Everton',4]
+//     ,['Chelsea','Leicester City',2]
+//     ,['Chelsea','Liverpool',2]
+//     ,['Chelsea','Manchester City',0]
+//     ,['Chelsea','Manchester Utd',1]
+//     ,['Chelsea','Newcastle Utd',7]
+//     ,['Chelsea','Norwich City',3]
+//     ,['Chelsea','Southampton',3]
+//     ,['Chelsea','Stoke City',1]
+//     ,['Chelsea','Sunderland',5]
+//     ,['Chelsea','Swansea City',2]
+//     ,['Chelsea','West Bromwich',5]
+//     ,['Chelsea','West Ham Utd',3]
+//     ,['Crystal Palace','Arsenal',2]
+//     ,['Crystal Palace','Aston Villa',2]
+//     ,['Crystal Palace','Bournemouth',1]
+//     ,['Crystal Palace','Chelsea',2]
+//     ,['Crystal Palace','Everton',1]
+//     ,['Crystal Palace','Manchester City',0]
+//     ,['Crystal Palace','Manchester Utd',0]
+//     ,['Crystal Palace','Newcastle Utd',5]
+//     ,['Everton','Arsenal',1]
+//     ,['Everton','Aston Villa',7]
+//     ,['Everton','Bournemouth',5]
+//     ,['Everton','Southampton',4]
+//     ,['Everton','Stoke City',6]
+//     ,['Everton','Sunderland',6]
+//     ,['Everton','Swansea City',1]
+//     ,['Everton','Tottenham',1]
+//     ,['Everton','Watford',3]
+//     ,['Everton','West Bromwich',3]
+//     ,['Everton','West Ham Utd',3]
+//     ,['Leicester City','Arsenal',3]
+//     ,['Leicester City','Aston Villa',4]
+//     ,['Leicester City','Bournemouth',1]
+//     ,['Leicester City','Chelsea',3]
+//     ,['Leicester City','Norwich City',3]
+//     ,['Leicester City','Southampton',3]
+//     ,['Leicester City','Stoke City',5]
+//     ,['Liverpool','Arsenal',3]
+//     ,['Liverpool','Aston Villa',9]
+//     ,['Liverpool','Bournemouth',3]
+//     ,['Liverpool','Chelsea',4]
+//     ,['Liverpool','Crystal Palace',3]
+//     ,['Liverpool','Everton',5]
+//     ,['Liverpool','Leicester City',1]
+//     ,['Liverpool','Manchester City',7]
+//     ,['Liverpool','West Bromwich',3]
+//     ,['Liverpool','West Ham Utd',0]
+//     ,['Manchester City','Arsenal',3]
+//     ,['Manchester City','Aston Villa',4]
+//     ,['Manchester City','Bournemouth',9]
+//     ,['Manchester City','Chelsea',6]
+//     ,['Manchester City','Crystal Palace',5]
+//     ,['Manchester Utd','Tottenham',1]
+//     ,['Manchester Utd','Watford',3]
+//     ,['Manchester Utd','West Bromwich',2]
+//     ,['Manchester Utd','West Ham Utd',2]
+//     ,['Newcastle Utd','Bournemouth',2]
+//     ,['Newcastle Utd','Tottenham',7]
+//     ,['Newcastle Utd','Watford',2]
+//     ,['Newcastle Utd','West Bromwich',1]
+//     ,['Newcastle Utd','West Ham Utd',2]
+//     ,['Norwich City','Arsenal',1]
+//     ,['Norwich City','Aston Villa',2]
+//     ,['Norwich City','Manchester Utd',2]
+//     ,['Norwich City','Newcastle Utd',5]
+//     ,['Norwich City','Southampton',1]
+//     ,['Norwich City','Stoke City',2]
+//     ,['Norwich City','West Ham Utd',4]
+//     ,['Southampton','Arsenal',4]
+//     ,['Southampton','Stoke City',2]
+//     ,['Southampton','Sunderland',2]
+//     ,['Southampton','West Bromwich',3]
+//     ,['Southampton','West Ham Utd',2]
+//     ,['Stoke City','Arsenal',0]
+//     ,['Stoke City','Aston Villa',3]
+//     ,['Stoke City','Bournemouth',5]
+//     ,['Stoke City','Chelsea',2]
+//     ,['Stoke City','Crystal Palace',2]
+//     ,['Stoke City','Everton',4]
+//     ,['Stoke City','Newcastle Utd',1]
+//     ,['Stoke City','West Ham Utd',2]
+//     ,['Sunderland','Arsenal',1]
+//     ,['Sunderland','Aston Villa',5]
+//     ,['Sunderland','Leicester City',2]
+//     ,['Sunderland','Tottenham',1]
+//     ,['Sunderland','Watford',2]
+//     ,['Sunderland','West Bromwich',0]
+//     ,['Sunderland','West Ham Utd',2]
+//     ,['Swansea City','Arsenal',2]
+//     ,['Swansea City','Aston Villa',3]
+//     ,['Swansea City','Bournemouth',4]
+//     ,['Swansea City','Chelsea',3]
+//     ,['Swansea City','Crystal Palace',1]
+//     ,['Swansea City','Everton',2]
+//     ,['Swansea City','Leicester City',0]
+//     ,['Swansea City','Liverpool',3]
+//     ,['Swansea City','West Bromwich',2]
+//     ,['Swansea City','West Ham Utd',4]
+//     ,['Tottenham','Arsenal',3]
+//     ,['Tottenham','Aston Villa',5]
+//     ,['Tottenham','Bournemouth',8]
+//     ,['Tottenham','Chelsea',2]
+//     ,['Tottenham','Crystal Palace',4]
+//     ,['Tottenham','Everton',1]
+//     ,['Tottenham','Leicester City',1]
+//     ,['Tottenham','Liverpool',1]
+//     ,['Tottenham','West Bromwich',2]
+//     ,['Tottenham','West Ham Utd',4]
+//     ,['Watford','Arsenal',0]
+//     ,['Watford','Aston Villa',6]
+//     ,['Watford','Bournemouth',1]
+//     ,['Watford','Chelsea',2]
+//     ,['Watford','Sunderland',3]
+//     ,['Watford','Swansea City',1]
+//     ,['Watford','Tottenham',1]
+//     ,['Watford','West Bromwich',1]
+//     ,['Watford','West Ham Utd',3]
+//     ,['West Bromwich','Arsenal',2]
+//     ,['West Bromwich','Leicester City',4]
+//     ,['West Bromwich','Liverpool',3]
+//     ,['West Bromwich','Manchester City',1]
+//     ,['West Ham Utd','Aston Villa',3]
+//     ,['West Ham Utd','Bournemouth',6]
+//     ,['West Ham Utd','Chelsea',4]
+//     ,['West Ham Utd','Crystal Palace',5]
+//     ,['West Ham Utd','Everton',4]
+//   ],
+//   "colors": {
+//     "Arsenal":         "#da4480"
+//     ,"Aston Villa":    "#5ab449"
+//     ,"Bournemouth":    "#7f5acd"
+//     ,"Chelsea":        "#aab740"
+//     ,"Crystal Palace": "#ce58c0"
+//     ,"Everton":        "#50a26e"
+//     ,"Leicester City": "#d1434b"
+//     ,"Liverpool":      "#45c0bc"
+//     ,"Manchester City":"#ce5929"
+//     ,"Manchester Utd": "#4e7bda"
+//     ,"Newcastle Utd":  "#d49d3c"
+//     ,"Norwich City":   "#6660a3"
+//     ,"Southampton":    "#7b853c"
+//     ,"Stoke City":     "#b58dde"
+//     ,"Sunderland":     "#97622e"
+//     ,"Swansea City":   "#609dd6"
+//     ,"Tottenham":      "#e29074"
+//     ,"Watford":        "#9c4b88"
+//     ,"West Bromwich":  "#ab505f"
+//     ,"West Ham Utd":   "#dc85b6"
+//   },
+//   "sortOrder":[
+//     "Arsenal"
+//     ,"Aston Villa"
+//     ,"Bournemouth"
+//     ,"Chelsea"
+//     ,"Crystal Palace"
+//     ,"Everton"
+//     ,"Leicester City"
+//     ,"Liverpool"
+//     ,"Manchester City"
+//     ,"Manchester Utd"
+//     ,"Newcastle Utd"
+//     ,"Norwich City"
+//     ,"Southampton"
+//     ,"Stoke City"
+//     ,"Sunderland"
+//     ,"Swansea City"
+//     ,"Tottenham"
+//     ,"Watford"
+//     ,"West Bromwich"
+//     ,"West Ham Utd"
+//   ]
+// };
+
+// drawChart(default_data);
+updateData(_chartData_);
+
+</script>
