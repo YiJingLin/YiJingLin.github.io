@@ -1,0 +1,310 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!--c3js用到d3，所以依然要載入-->
+    <script src="src/d3.v3.min.js" charset="utf-8"></script>
+    <script src="src/c3.min.js"></script>
+    <!-- Load c3.css -->
+    <link href="src/c3.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="src/jquery-3.1.1.min.js"></script>
+
+    <style>
+        text {
+            font: 11pt AvenirNext;
+        }
+        svg {
+            display: block;
+        }
+        html, body, #chart_div, svg {
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="chart_div" height="100%"/>
+
+<script>
+    "use strict";
+    function onMessage (evt) {
+        if (evt && evt.data && evt.data.hasOwnProperty("data"))
+            updateData(evt.data);
+    }
+
+    if (window.addEventListener) {
+        // For standards-compliant web browsers
+        window.addEventListener("message", onMessage, false);
+    }
+    else {
+        window.attachEvent("onmessage", onMessage);
+    }
+
+    var self = this;
+	var formatter = {};
+	var selection = {enabled: true,
+				draggable: true,
+				multiple: true};
+	var onclick = function (d, element) { 
+				var sel = chart.selected();
+				var selection = [];
+				
+				for (var s of sel)
+				{
+					selection.push({row: s.index});
+				}
+				
+				var message = {
+					resultName: self.resultName,
+					selections: selection
+				};
+				
+				var url = (window.location != window.parent.location)
+					? document.referrer
+					: document.location.href;
+					
+                window.parent.postMessage(message, url);
+			};
+	
+    var chart = c3.generate({
+        bindto: '#chart_div', 
+        data: {
+            rows: [[]],
+            type: 'bar',
+        },
+        axis: {
+            rotated: true,//retate xAxis & yAxis
+            x: {//x-ary type
+                type: 'category' // this needed to make axis categorical
+            }
+		},
+		tooltip: {//which will show when onmouseover the point on chart
+			format: {
+				value: function (value, ratio, id) {
+					if (formatter && formatter[id])
+						return formatter[id](value);
+					return value;
+				}
+			}
+		}		,
+        bar: {
+            width: {
+                // ratio: 0.5 // this makes bar width 50% of length between ticks
+            }
+            // or
+            //width: 100 // this makes bar width 100px
+        }
+    });
+
+    function updateData(chartData)
+    {
+        var xAxis = null;
+        var values = [];
+		var columnInfo = null;
+		
+		columnInfo = chartData.columns;
+		self.resultName = chartData.resultName;
+		
+		if (columnInfo)
+		{
+			var columnLabelsArray = [];
+			var columnLabels = null;
+			for (var i = 0; i < columnInfo.length; i++)
+			{
+				var colInfo = columnInfo[i];
+				if (colInfo.type == "number")
+				{
+					values.push(colInfo.label);
+					if (colInfo.format)
+					{
+						if (colInfo.format.name == "DOLLAR")
+							self.formatter[colInfo.label] = d3.format("$" + colInfo.format.width + ",." + colInfo.format.precision + "f");
+						else if (colInfo.format.name == "COMMA")
+							self.formatter[colInfo.label] = d3.format(colInfo.format.width + ",." + colInfo.format.precision + "f");
+						else if (colInfo.format.name == "F")
+							self.formatter[colInfo.label] = d3.format(colInfo.format.width + "." + colInfo.format.precision + "f");
+						else if (colInfo.format.name == "PERCENT")
+							self.formatter[colInfo.label] = d3.format(colInfo.format.width + ",." + colInfo.format.precision + "%");
+					}
+				}
+				else
+					xAxis = colInfo.label;//there sholud be only one non-number (column.type!='number') column in this chart 
+					
+				if (columnLabels)
+					columnLabels += ",\"" + colInfo.label + "\"";
+				else
+					columnLabels = "\"" + colInfo.label + "\"";
+				columnLabelsArray.push(colInfo.label);
+				
+			}						
+		}		
+
+        var shouldUnload = false;
+        if (self.xAxis && self.xAxis != xAxis)
+            shouldUnload = true;
+        if (self.values)
+        {
+            if (self.values.length != values.length)
+                shouldUnload = true;
+            else
+            {
+                for (var value of values)
+                {
+                    if (self.values.indexOf(value) == -1)
+                    {
+                        shouldUnload = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+		var loadData = {};
+		
+		if (chartData.data)
+		{
+			loadData.rows = chartData.data;
+			if (columnLabelsArray)
+			{
+				loadData.rows.splice(0, 0, columnLabelsArray);
+			}				
+			if (xAxis)
+				loadData.x = xAxis;
+		}
+		loadData.keys = {x: xAxis, value: values};
+
+        self.xAxis = xAxis;
+        self.values = values;
+		
+        if (shouldUnload)
+			loadData.unload = shouldUnload;
+
+
+		
+	loadData.type = "bar";
+	loadData.selection = selection;
+	loadData.onclick = onclick;
+		
+    var chart = c3.generate({
+        bindto: '#chart_div',
+        data: loadData,
+        axis: {
+            rotated: true,
+            x: {
+                type: 'category' // this needed to make axis categorical
+            }
+		},
+		tooltip: {
+			format: {
+				value: function (value, ratio, id) {
+					if (formatter && formatter[id])
+						return formatter[id](value);
+					return value;
+				}
+			}
+		}		,
+        bar: {
+            width: {
+                // ratio: 0.5 // this makes bar width 50% of length between ticks
+            }
+            // or
+            //width: 100 // this makes bar width 100px
+        }
+    });		
+    }
+
+
+var _chartData_={
+  "version" : "1",
+  "rowCount" : 2,
+  "availableRowCount" : 2,
+  "data" : [['hola', 300, 200, 100, 400, 150, 250],
+            ['hidude', 130, 100, 140, 200, 150, 50]],
+  "columns" : [ {
+	"label" : "dte",
+	"type" : "date",
+	"usage" : "categorical",
+	"format" : {
+	  "name" : "DDMMYY",
+	  "width" : 8,
+	  "precision" : 0,
+	  "formatString" : "DDMMYY8"
+	}
+  }, {
+	"label" : "para1",
+	"type" : "number",
+	"usage" : "quantitative",
+	"aggregation" : "sum",
+	"format" : {
+	  "name" : "DOLLAR",
+	  "width" : 12,
+	  "precision" : 0,
+	  "formatString" : "BEST12."
+	}
+  }, {
+	"label" : "para2",
+	"type" : "number",
+	"usage" : "quantitative",
+	"aggregation" : "sum",
+	"format" : {
+	  "name" : "DOLLAR",
+	  "width" : 12,
+	  "precision" : 0,
+	  "formatString" : "BEST12."
+	}
+  }, {
+	"label" : "para3",
+	"type" : "number",
+	"usage" : "quantitative",
+	"aggregation" : "sum",
+	"format" : {
+	  "name" : "BEST",
+	  "width" : 12,
+	  "precision" : 0,
+	  "formatString" : "BEST12."
+	}
+  }, {
+	"label" : "para4",
+	"type" : "number",
+	"usage" : "quantitative",
+	"aggregation" : "sum",
+	"format" : {
+	  "name" : "BEST",
+	  "width" : 12,
+	  "precision" : 0,
+	  "formatString" : "BEST12."
+	}
+  }, {
+	"label" : "para5",
+	"type" : "number",
+	"usage" : "quantitative",
+	"aggregation" : "sum",
+	"format" : {
+	  "name" : "BEST",
+	  "width" : 12,
+	  "precision" : 0,
+	  "formatString" : "BEST12."
+	}
+  }, {
+	"label" : "para6",
+	"type" : "number",
+	"usage" : "quantitative",
+	"aggregation" : "sum",
+	"format" : {
+	  "name" : "BEST",
+	  "width" : 12,
+	  "precision" : 0,
+	  "formatString" : "BEST12."
+	}
+  }]
+};
+
+setTimeout(updateData(_chartData_),5000);
+</script>
+
+</body>
+</html>
