@@ -82,7 +82,7 @@ function classes(root) {
 d3.select(self.frameElement).style("height", diameter + "px");
 
 function trans_bubbleChartData(charData){
-  result={}; //root
+  var result={}; //root
   result.name = "bubbleChartData"; //root.name :string
   var dataRoot = result.children = []; //root.children : list
   var ChildrenRows = {}; //root.children[index]
