@@ -4,10 +4,6 @@
 body {
   font: 10px sans-serif;
 }
-svg{
-  max-width:100%;
-  height:auto;
-}
 
 svg text{
   fill:grey;
@@ -22,24 +18,26 @@ svg .values text{
   font-weight:bold;
 }
 </style>
-<body>
+<body><div><svg/></div>
 <script src="src/d3.v4.min.js"></script>
 <script src="src/viz.v1.1.0.min.js"></script>
 <script>
 "use strict";
-  function onMessage (evt) {
-      if (evt && evt.data && evt.data.hasOwnProperty("data"))
-          updateData(evt.data);
-  }
+function onMessage (evt) {
+    if (evt && evt.data && evt.data.hasOwnProperty("data"))
+        updateData(evt.data);
+}
 
-  if (window.addEventListener) {
-      // For standards-compliant web browsers
-      window.addEventListener("message", onMessage, false);
-  }
-  else {
-      window.attachEvent("onmessage", onMessage);
-  }
-
+if (window.addEventListener) {
+    // For standards-compliant web browsers
+    window.addEventListener("message", onMessage, false);
+}
+else {
+    window.attachEvent("onmessage", onMessage);
+}
+var pack = d3.pack()
+  .size([300,300])
+  .padding(1.5);  
 
 function updateData(chartData){
   var normalizedData = transform_chartData(chartData);
@@ -86,7 +84,9 @@ function drawChart(normalizedData){
 
   var width=1200, height=1100;
 
-  var svg = d3.select("body").append("svg").attr("height",height).attr("width",width);
+  var svg = d3.select("svg").attr("height",height).attr("width",width);
+
+  // pack(svg);
 
   svg.append("g").attr("transform", "translate(600,550)").call(ch);
 
@@ -400,6 +400,6 @@ var _chartData_ = {
 // };
 
 // drawChart(default_data);
-// updateData(_chartData_);
+updateData(_chartData_);
 
 </script>
