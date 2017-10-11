@@ -68,12 +68,12 @@
 
 
   // chartData = c.split("\n").map(function(i){return i.split(",")}) //將csv轉成2-d ary
-  headers = [];
+  var headers = [];
   rawdata.forEach(function(item, i){ //each row data , item:value & i:index
     if(i==0){ //row0 is for label
       headers = item;
     }else{
-      newSeries = {};
+      var newSeries = {};
       item.forEach( function(v, j){
         if(j==0){
           newSeries.className = v;
