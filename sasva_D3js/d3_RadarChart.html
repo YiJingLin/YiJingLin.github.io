@@ -34,6 +34,19 @@
   </head>
   <body>
 <script type="text/javascript">
+  "use strict";
+  function onMessage (evt) {
+      if (evt && evt.data && evt.data.hasOwnProperty("data"))
+        updateData(evt.data);
+  }
+
+  if (window.addEventListener) {
+      // For standards-compliant web browsers
+      window.addEventListener("message", onMessage, false);
+  }
+  else {
+      window.attachEvent("onmessage", onMessage);
+  }
 
   function updateData(chartData){
     var data = [];
