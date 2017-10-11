@@ -27,6 +27,20 @@
    
   <div id="mainBubble" style="height: 579px;"><svg class="mainBubbleSVG" width="826.88" height="579"></svg></div>
   <script>
+  "use strict";
+  function onMessage (evt) {
+      if (evt && evt.data && evt.data.hasOwnProperty("data"))
+          updateData(evt.data);
+  }
+
+  if (window.addEventListener) {
+      // For standards-compliant web browsers
+      window.addEventListener("message", onMessage, false);
+  }
+  else {
+      window.attachEvent("onmessage", onMessage);
+  }
+
    var w = window.innerWidth*0.68*0.95;
    var h = Math.ceil(w*0.7);
    var oR = 0;
