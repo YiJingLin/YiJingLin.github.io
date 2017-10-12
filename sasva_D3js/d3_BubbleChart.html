@@ -15,8 +15,7 @@ text {
     function onMessage (evt) {
       if (evt && evt.data && evt.data.hasOwnProperty("data"))
         if(evt.data.data!=[]){
-          d3.select("svg").selectAll("*").remove(); 
-          
+          // d3.select("svg").selectAll("*").remove();
         }
         updateData(evt.data);
       }
