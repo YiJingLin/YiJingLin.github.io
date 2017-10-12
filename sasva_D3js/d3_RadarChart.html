@@ -48,14 +48,6 @@
         window.attachEvent("onmessage", onMessage);
     }
 
-  if (window.addEventListener) {
-      // For standards-compliant web browsers
-      window.addEventListener("message", onMessage, false);
-  }
-  else {
-      window.attachEvent("onmessage", onMessage);
-  }
-
   function updateData(chartData){
     var data = [];
     var rawdata = []; //preprocessing result storage

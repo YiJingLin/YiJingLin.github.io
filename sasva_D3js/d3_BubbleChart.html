@@ -33,6 +33,7 @@ var bubble = d3.pack()
     .size([diameter, diameter])
     .padding(1.5);
 
+d3.select("svg").remove();
 var svg = d3.select("svg")
     .attr("width", diameter)
     .attr("height", diameter)
