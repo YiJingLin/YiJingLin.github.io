@@ -14,10 +14,11 @@ text {
 "use strict";
     function onMessage (evt) {
       if (evt && evt.data && evt.data.hasOwnProperty("data"))
-        if(evt.data!=null){
+        if(evt.data.data!=[]){
           d3.select("svg").selectAll("*").remove(); 
-          updateData(evt.data);   
+          
         }
+        updateData(evt.data);
       }
     }
 
