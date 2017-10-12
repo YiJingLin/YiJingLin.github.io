@@ -6,7 +6,7 @@ text {
   font: 10px sans-serif;
 }
 </style>
-<body>
+<body id="body">
 <svg/>
 
 <script src="src/d3.v4.js"></script>
@@ -33,7 +33,7 @@ text {
 
           sendMessage(message);
       }
-      alert('aaa');
+      document.getElementById("body").html('hi');
       updateData(evt.data);
   }
 
