@@ -29,17 +29,6 @@ var diameter = 960,
     format = d3.format(",d"),
     color = d3.scaleOrdinal(d3.schemeCategory20);
 
-var bubble = d3.pack()
-    .size([diameter, diameter])
-    .padding(1.5);
-
-
-var svg = d3.select("svg")
-    .attr("width", diameter)
-    .attr("height", diameter)
-    .attr("class", "bubble");
-
-
 function sendMessage(message)
 {
   var url = (window.location != window.parent.location)
@@ -54,6 +43,15 @@ function sendMessage(message)
   drawBubbleChart(normalizedData);
  }
  function drawBubbleChart(data){
+  var bubble = d3.pack()
+      .size([diameter, diameter])
+      .padding(1.5);
+
+  var svg = d3.select("svg")
+      .attr("width", diameter)
+      .attr("height", diameter)
+      .attr("class", "bubble");
+  
   var root = d3.hierarchy(classes(data))
       .sum(function(d) { return d.value; })
       .sort(function(a, b) { return b.value - a.value; });
