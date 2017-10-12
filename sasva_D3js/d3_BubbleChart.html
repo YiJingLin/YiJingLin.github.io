@@ -33,7 +33,7 @@ var bubble = d3.pack()
     .size([diameter, diameter])
     .padding(1.5);
 
-d3.select("svg").selectAll("*").remove();
+
 var svg = d3.select("svg")
     .attr("width", diameter)
     .attr("height", diameter)
@@ -49,6 +49,7 @@ function sendMessage(message)
   window.parent.postMessage(message, url);
 }  
  function updateData(data){
+  d3.select("svg").selectAll("*").remove();
   var normalizedData = trans_bubbleChartData(data);
   drawBubbleChart(normalizedData);
  }
