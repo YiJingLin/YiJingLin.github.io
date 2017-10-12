@@ -14,6 +14,7 @@ text {
 "use strict";
     function onMessage (evt) {
         if (evt && evt.data && evt.data.hasOwnProperty("data"))
+            d3.select("svg").selectAll("*").remove();
             updateData(evt.data);
     }
 
@@ -38,7 +39,6 @@ function sendMessage(message)
   window.parent.postMessage(message, url);
 }  
  function updateData(data){
-  d3.select("svg").selectAll("*").remove();
   var normalizedData = trans_bubbleChartData(data);
   drawBubbleChart(normalizedData);
  }
