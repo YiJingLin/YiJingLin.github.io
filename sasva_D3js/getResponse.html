@@ -15,7 +15,7 @@ text {
     "use strict";
 	function onMessage (evt) {
 	    if (evt && evt.data && evt.data.hasOwnProperty("data"))
-	        updateData(evt.data);
+	        console.log(JSON.stringify(evt.data.data));
 	}
 
 	if (window.addEventListener) {
