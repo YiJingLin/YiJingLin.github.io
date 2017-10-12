@@ -32,12 +32,18 @@
 
 
   </head>
-  <body>
+  <body><svg/>
 <script type="text/javascript">
 "use strict";
     function onMessage (evt) {
-        if (evt && evt.data && evt.data.hasOwnProperty("data"))
-            updateData(evt.data);
+      if (evt && evt.data && evt.data.hasOwnProperty("data")){
+        if(evt.data.data.length == 0){
+          updateData(_chartData_);
+        }else{
+          d3.select("svg").selectAll("*").remove();
+          updateData(evt.data);
+        }
+      }
     }
 
     if (window.addEventListener) {

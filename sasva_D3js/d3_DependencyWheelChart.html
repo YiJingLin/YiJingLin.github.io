@@ -18,15 +18,20 @@ svg .values text{
   font-weight:bold;
 }
 </style>
-<body><div><svg/></div>
+<body><svg/>
 <script src="src/d3.v4.min.js"></script>
 <script src="src/viz.v1.1.0.min.js"></script>
 <script>
 "use strict";
     function onMessage (evt) {
-        if (evt && evt.data && evt.data.hasOwnProperty("data")){
+      if (evt && evt.data && evt.data.hasOwnProperty("data")){
+        if(evt.data.data.length == 0){
+          updateData(_chartData_);
+        }else{
+          d3.select("svg").selectAll("*").remove();
           updateData(evt.data);
         }
+      }
 
     }
 
