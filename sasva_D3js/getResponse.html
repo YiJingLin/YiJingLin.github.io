@@ -17,7 +17,7 @@ text {
 	    if (evt && evt.data && evt.data.hasOwnProperty("data"))
 	    {
 	    	var output_div = document.getElementById('output_div');
-	  		output_div.innerHTML = JSON.stringify(chartData);
+	  		output_div.innerHTML = JSON.stringify(evt.data.data);
 	    }
 	}
 
