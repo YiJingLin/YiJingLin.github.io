@@ -25,7 +25,12 @@ svg .values text{
 "use strict";
     function onMessage (evt) {
         if (evt && evt.data && evt.data.hasOwnProperty("data"))
-            updateData(evt.data);
+          if(evt.data!=null){
+            d3.select("svg").selectAll("*").remove(); 
+            updateData(evt.data);   
+          }
+        }
+
     }
 
     if (window.addEventListener) {
@@ -35,14 +40,6 @@ svg .values text{
     else {
         window.attachEvent("onmessage", onMessage);
     }
-
-if (window.addEventListener) {
-    // For standards-compliant web browsers
-    window.addEventListener("message", onMessage, false);
-}
-else {
-    window.attachEvent("onmessage", onMessage);
-}
 var pack = d3.pack()
   .size([300,300])
   .padding(1.5);  
