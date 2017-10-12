@@ -13,7 +13,7 @@ text {
 <script>
 "use strict";
     function onMessage (evt) {
-      if (evt && evt.data && evt.data.hasOwnProperty("data"))
+      if (evt && evt.data && evt.data.hasOwnProperty("data")){
         if(evt.data.data.length == 0){
           d3.select("svg").selectAll("*").remove();
           updateData(_chartData_);
