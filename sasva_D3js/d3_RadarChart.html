@@ -34,29 +34,19 @@
   </head>
   <body>
 <script type="text/javascript">
-  function onMessage (evt) {
-    if (evt && evt.data && evt.data.hasOwnProperty("data"))
-      var results = null;
-      var columnInfo = sampleColumnInfo;
+"use strict";
+    function onMessage (evt) {
+        if (evt && evt.data && evt.data.hasOwnProperty("data"))
+            updateData(evt.data);
+    }
 
-      self.resultName = evt.data.resultName;
-
-      if (evt.data.availableRowCount >= 0) {
-          results = evt.data;
-          columnInfo = evt.data.columns;
-      }
-
-      if (results == null) {
-          results = sampleData;
-          var message = {
-              resultName: self.resultName,
-              message: "No data items are assigned.\nAssign one or more columns to view the data."
-          };
-
-          sendMessage(message);
-      }
-      updateData(evt.data);
-  }
+    if (window.addEventListener) {
+        // For standards-compliant web browsers
+        window.addEventListener("message", onMessage, false);
+    }
+    else {
+        window.attachEvent("onmessage", onMessage);
+    }
 
   if (window.addEventListener) {
       // For standards-compliant web browsers
