@@ -16,7 +16,7 @@ text {
 	function onMessage (evt) {
 	    if (evt && evt.data && evt.data.hasOwnProperty("data"))
 	    {
-	    	if(evt.data.data==[]){
+	    	if(evt.data.data.length == 0){
 	    		var output_div = document.getElementById('output_div');
 	  			output_div.innerHTML = "empty";
 	    	}else{
