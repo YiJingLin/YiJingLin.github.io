@@ -18,7 +18,7 @@ svg .values text{
   font-weight:bold;
 }
 </style>
-<body><svg/>
+<body><div id="hint">you need 1 categorical data & n quantitative data</div><svg/>
 <script src="src/d3.v4.min.js"></script>
 <script src="src/viz.v1.1.0.min.js"></script>
 <script>
@@ -29,6 +29,7 @@ svg .values text{
           updateData(_chartData_);
         }else{
           d3.select("svg").selectAll("*").remove();
+          document.getElementById("hint").innerHTML="";
           updateData(evt.data);
         }
       }
