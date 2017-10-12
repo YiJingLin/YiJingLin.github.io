@@ -32,7 +32,7 @@
 
 
   </head>
-  <body><svg/>
+  <body><div id="hint">you need 1 categorical data & n quantitative data</div><svg/>
 <script type="text/javascript">
 "use strict";
     function onMessage (evt) {
@@ -41,6 +41,7 @@
           updateData(_chartData_);
         }else{
           d3.select("svg").selectAll("*").remove();
+          document.getElementById("hint").innerHTML="";
           updateData(evt.data);
         }
       }
@@ -203,8 +204,9 @@ var _chartData_={
 
 <div id="chart-container"></div>
 <script type="text/javascript">
-    updateData(_chartData_);
-  </script>
+  
+  updateData(_chartData_);
+</script>
 
 </body>
 </html>
