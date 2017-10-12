@@ -17,6 +17,7 @@ text {
         if(evt.data.data.length == 0){
           updateData(_chartData_);
         }else{
+          d3.select("svg").selectAll("*").remove();
           updateData(evt.data);
         }
       }
