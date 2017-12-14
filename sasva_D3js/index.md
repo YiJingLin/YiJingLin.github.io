@@ -21,8 +21,12 @@ For more details , see [SAS VA 8.2 - Data Driven Visualization (en)](http://go.d
 - 使用 “物件 > 其他 > 資料驅動內容” 載入圖表
 
 ### 圖表：
+
 泡泡圖 | 泡泡類別圖 | 相依輪型圖 | 雷達圖
 
+
+
+![bubble](./src/img/bubble.png)
 
 
 
