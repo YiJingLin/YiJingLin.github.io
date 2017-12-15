@@ -1,2 +1,2 @@
 # YiJingLin.github.io
-github website 
+view my [github website](https://yijinglin.github.io/)
