@@ -8,9 +8,9 @@
 
 ### Chart：
 
-BubbleChart | BubbleMenuChart | DependencyWheelChart | RadarChart |
------------- |:-------------:|:------------:| -------------:|
-![img](./src/img/bubble.png) | ![img](./src/img/bubble_menu.png) | ![img](./src/img/dependency_wheel.png) | ![img](./src/img/radar.png)
+Bubble | BubbleMenu | DependencyWheel | Radar
+------------ | ------------- | ------------ | -------------
+[![img](./src/img/bubble.png)](./d3_BubbleChart.html) | [![img](./src/img/bubble_menu.png)](./d3_BubbleMenuChart.html) | [![img](./src/img/dependency_wheel.png)](./d3_DependencyWheelChart.html) | [![img](./src/img/radar.png)](./d3_RadarChart.html) |
 
 
 
@@ -27,8 +27,7 @@ For more details , see [SAS VA 8.2 - Data Driven Visualization (en)](http://go.d
 
 泡泡圖 | 泡泡類別圖 | 相依輪型圖 | 雷達圖
 ------------ | ------------- | ------------ | -------------
-![img](./src/img/bubble.png) | ![img](./src/img/bubble_menu.png) | ![img](./src/img/dependency_wheel.png) | ![img](./src/img/radar.png)
-
+[![img](./src/img/bubble.png)](./d3_BubbleChart.html) | [![img](./src/img/bubble_menu.png)](./d3_BubbleMenuChart.html) | [![img](./src/img/dependency_wheel.png)](./d3_DependencyWheelChart.html) | [![img](./src/img/radar.png)](./d3_RadarChart.html) |
 
 
 更多的細節 , 請參考 [SAS VA 8.2 - Data Driven Visualization (zh-TW)](http://go.documentation.sas.com/?cdcId=vacdc&cdcVersion=8.2&docsetId=varef&docsetTarget=n109mqtyl6quiun1mwfgtcn2s68b.htm&locale=zh-TW)
