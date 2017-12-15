@@ -11,6 +11,8 @@
 BubbleChart | BubbleMenuChart | DependencyWheelChart | RadarChart
 
 
+
+
 For more details , see [SAS VA 8.2 - Data Driven Visualization (en)](http://go.documentation.sas.com/?cdcId=vacdc&cdcVersion=8.2&docsetId=varef&docsetTarget=n109mqtyl6quiun1mwfgtcn2s68b.htm&locale=en).
 
 
@@ -22,13 +24,15 @@ For more details , see [SAS VA 8.2 - Data Driven Visualization (en)](http://go.d
 
 ### 圖表：
 
-泡泡圖 | 泡泡類別圖 | 相依輪型圖 | 雷達圖
-
-
-
-![bubble](./src/img/bubble.png) | | | 
+泡泡圖 | 泡泡類別圖| 相依輪型圖 | 雷達圖
+------------ | ------------- | ------------ | -------------
+![img](./src/img/bubble.png) | | | 
 
 
 
 更多的細節 , 請參考 [SAS VA 8.2 - Data Driven Visualization (zh-TW)](http://go.documentation.sas.com/?cdcId=vacdc&cdcVersion=8.2&docsetId=varef&docsetTarget=n109mqtyl6quiun1mwfgtcn2s68b.htm&locale=zh-TW)
+
+```javascript
+
+```
 
