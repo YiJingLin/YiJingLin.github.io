@@ -8,8 +8,8 @@
 
 ### Chart：
 
-BubbleChart | BubbleMenuChart | DependencyWheelChart | RadarChart
------------- | ------------- | ------------ | -------------
+Bubble | BubbleMenu | DependencyWheel | Radar
+
 ![img](./src/img/bubble.png) | ![img](./src/img/bubble_menu.png) | ![img](./src/img/dependency_wheel.png) | ![img](./src/img/radar.png)
 
 
@@ -26,7 +26,7 @@ For more details , see [SAS VA 8.2 - Data Driven Visualization (en)](http://go.d
 ### 圖表：
 
 泡泡圖 | 泡泡類別圖| 相依輪型圖 | 雷達圖
------------- | ------------- | ------------ | -------------
+
 ![img](./src/img/bubble.png) | ![img](./src/img/bubble_menu.png) | ![img](./src/img/dependency_wheel.png) | ![img](./src/img/radar.png)
 
 
