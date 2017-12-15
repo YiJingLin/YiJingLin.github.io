@@ -26,7 +26,7 @@ For more details , see [SAS VA 8.2 - Data Driven Visualization (en)](http://go.d
 
 
 
-![bubble](./src/img/bubble.png)
+![bubble](./src/img/bubble.png) | | | 
 
 
 
