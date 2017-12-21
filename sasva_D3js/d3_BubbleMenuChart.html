@@ -36,6 +36,7 @@
         if(evt.data.data.length == 0){
           updateData(_chartData_);
         }else{
+          d3.select("svg").selectAll("*").remove(); //update chart
           document.getElementById("hint").innerHTML="";
           updateData(evt.data);
         }
