@@ -1,6 +1,4 @@
-
-<!-- saved from url=(0062)https://yijinglin.github.io/sasva_D3js/d3_BubbleMenuChart.html -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">
+<style type="text/css">
     #mainBubble {
       background: #fff;
       box-shadow: 0 0 4px rgba(0,0,0,0);
@@ -22,25 +20,18 @@
       stroke-width: 1.5px;
      }
     </style>
-    <div id="hint">you need 2 categorical data, and 1 numerical data</div>
-    <script type="text/javascript" src="./Bubble Menu_files/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="src/d3.v3.min.js" charset="utf-8"></script>
     <title>
       Bubble Menu
     </title>
    
-  </head><body><div id="mainBubble" style="height: 579px;"><svg class="mainBubbleSVG" width="826.88" height="579"></svg></div>
+  <div id="mainBubble" style="height: 579px;"><svg class="mainBubbleSVG" width="826.88" height="579"></svg></div>
   <script>
   "use strict";
   function onMessage (evt) {
-      if (evt && evt.data && evt.data.hasOwnProperty("data")){
-        if(evt.data.data.length == 0){
-          updateData(_chartData_);
-        }else{
-          document.getElementById("hint").innerHTML="";
+      if (evt && evt.data && evt.data.hasOwnProperty("data"))
           updateData(evt.data);
-        }
-      }
-    }
+  }
 
   if (window.addEventListener) {
       // For standards-compliant web browsers
@@ -50,9 +41,17 @@
       window.attachEvent("onmessage", onMessage);
   }
 
-function drawBubbleMenuChart(root){
+function sendMessage(message)
+{
+  var url = (window.location != window.parent.location)
+      ? document.referrer
+      : document.location.href;
 
-   var w = window.innerWidth*0.68*0.95;
+  window.parent.postMessage(message, url);
+}  
+
+  function drawBubbleMenuChart(root){
+     var w = window.innerWidth*0.68*0.95;
    var h = Math.ceil(w*0.7);
    var oR = 0;
    var nTop = 0;
@@ -75,8 +74,6 @@ function drawBubbleMenuChart(root){
     .attr("alignment-baseline", "middle")
     .style("fill", "#888888");   
  
- 
-
      
         var bubbleObj = svg.selectAll(".topBubble")
                 .data(root.children)
@@ -165,9 +162,10 @@ function drawBubbleMenuChart(root){
                 window.open(d.address);
                 }); 
  
-        }; 
- 
-    function resetBubbles() {
+        };
+
+
+    resetBubbles = function () {
       w = window.innerWidth*0.68*0.95;
       oR = w/(1+3*nTop);
        
@@ -210,88 +208,92 @@ function drawBubbleMenuChart(root){
                      
       }   
     }
-         
-         
-        function activateBubble(d,i) {
-            // increase this bubble and decrease others
-            var t = svg.transition()
-                .duration(d3.event.altKey ? 7500 : 350);
-     
-            t.selectAll(".topBubble")
-                .attr("cx", function(d,ii){
-                    if(i == ii) {
-                        // Nothing to change
-                        return oR*(3*(1+ii)-1) - 0.6*oR*(ii-1);
-                    } else {
-                        // Push away a little bit
-                        if(ii < i){
-                            // left side
-                            return oR*0.6*(3*(1+ii)-1);
-                        } else {
-                            // right side
-                            return oR*(nTop*3+1) - oR*0.6*(3*(nTop-ii)-1);
-                        }
-                    }               
-                })
-                .attr("r", function(d, ii) { 
-                    if(i == ii)
-                        return oR*1.8;
-                    else
-                        return oR*0.8;
-                    });
-                     
-            t.selectAll(".topBubbleText")
-                .attr("x", function(d,ii){
-                    if(i == ii) {
-                        // Nothing to change
-                        return oR*(3*(1+ii)-1) - 0.6*oR*(ii-1);
-                    } else {
-                        // Push away a little bit
-                        if(ii < i){
-                            // left side
-                            return oR*0.6*(3*(1+ii)-1);
-                        } else {
-                            // right side
-                            return oR*(nTop*3+1) - oR*0.6*(3*(nTop-ii)-1);
-                        }
-                    }               
-                })          
-                .attr("font-size", function(d,ii){
-                    if(i == ii)
-                        return 30*1.5;
-                    else
-                        return 30*0.6;              
-                });
-     
-            var signSide = -1;
-            for(var k = 0; k < nTop; k++) 
-            {
-                signSide = 1;
-                if(k < nTop/2) signSide = 1;
-                t.selectAll(".childBubbleText" + k)
-                    .attr("x", function(d,i) {return (oR*(3*(k+1)-1) - 0.6*oR*(k-1) + signSide*oR*2.5*Math.cos((i-1)*45/180*3.1415926));})
-                    .attr("y", function(d,i) {return ((h+oR)/3 + signSide*oR*2.5*Math.sin((i-1)*45/180*3.1415926));})
-                    .attr("font-size", function(){
-                            return (k==i)?12:6;
-                        })
-                    .style("opacity",function(){
-                            return (k==i)?1:0;
-                        });
-                     
-                t.selectAll(".childBubble" + k)
-                    .attr("cx", function(d,i) {return (oR*(3*(k+1)-1) - 0.6*oR*(k-1) + signSide*oR*2.5*Math.cos((i-1)*45/180*3.1415926));})
-                    .attr("cy", function(d,i) {return ((h+oR)/3 + signSide*oR*2.5*Math.sin((i-1)*45/180*3.1415926));})
-                    .attr("r", function(){
-                            return (k==i)?(oR*0.55):(oR/3.0);               
-                    })
-                    .style("opacity", function(){
-                            return (k==i)?1:0;                  
-                        }); 
-            }                   
-        }
-     
+
     window.onresize = resetBubbles;
-}
+
+  }
+ 
+    
+         
+         
+    function activateBubble(d,i) {
+        // increase this bubble and decrease others
+        var t = svg.transition()
+            .duration(d3.event.altKey ? 7500 : 350);
+ 
+        t.selectAll(".topBubble")
+            .attr("cx", function(d,ii){
+                if(i == ii) {
+                    // Nothing to change
+                    return oR*(3*(1+ii)-1) - 0.6*oR*(ii-1);
+                } else {
+                    // Push away a little bit
+                    if(ii < i){
+                        // left side
+                        return oR*0.6*(3*(1+ii)-1);
+                    } else {
+                        // right side
+                        return oR*(nTop*3+1) - oR*0.6*(3*(nTop-ii)-1);
+                    }
+                }               
+            })
+            .attr("r", function(d, ii) { 
+                if(i == ii)
+                    return oR*1.8;
+                else
+                    return oR*0.8;
+                });
+                 
+        t.selectAll(".topBubbleText")
+            .attr("x", function(d,ii){
+                if(i == ii) {
+                    // Nothing to change
+                    return oR*(3*(1+ii)-1) - 0.6*oR*(ii-1);
+                } else {
+                    // Push away a little bit
+                    if(ii < i){
+                        // left side
+                        return oR*0.6*(3*(1+ii)-1);
+                    } else {
+                        // right side
+                        return oR*(nTop*3+1) - oR*0.6*(3*(nTop-ii)-1);
+                    }
+                }               
+            })          
+            .attr("font-size", function(d,ii){
+                if(i == ii)
+                    return 30*1.5;
+                else
+                    return 30*0.6;              
+            });
+ 
+        var signSide = -1;
+        for(var k = 0; k < nTop; k++) 
+        {
+            signSide = 1;
+            if(k < nTop/2) signSide = 1;
+            t.selectAll(".childBubbleText" + k)
+                .attr("x", function(d,i) {return (oR*(3*(k+1)-1) - 0.6*oR*(k-1) + signSide*oR*2.5*Math.cos((i-1)*45/180*3.1415926));})
+                .attr("y", function(d,i) {return ((h+oR)/3 + signSide*oR*2.5*Math.sin((i-1)*45/180*3.1415926));})
+                .attr("font-size", function(){
+                        return (k==i)?12:6;
+                    })
+                .style("opacity",function(){
+                        return (k==i)?1:0;
+                    });
+                 
+            t.selectAll(".childBubble" + k)
+                .attr("cx", function(d,i) {return (oR*(3*(k+1)-1) - 0.6*oR*(k-1) + signSide*oR*2.5*Math.cos((i-1)*45/180*3.1415926));})
+                .attr("cy", function(d,i) {return ((h+oR)/3 + signSide*oR*2.5*Math.sin((i-1)*45/180*3.1415926));})
+                .attr("r", function(){
+                        return (k==i)?(oR*0.55):(oR/3.0);               
+                })
+                .style("opacity", function(){
+                        return (k==i)?1:0;                  
+                    }); 
+        }                   
+    }
+     
 function transData_bubbleＭenuChart(charData){
   var result={}; //root
   result.name = "bubbleMenuChartData"; //root.name :string
@@ -327,7 +329,7 @@ function updateData(charData){
   drawBubbleMenuChart(normalizedData);
 }
 
-var _chartData_ = {
+    var _chartData_ = {
   "version" : "1",
   "rowCount" : 18,
   "availableRowCount" : 18,
@@ -368,44 +370,43 @@ var _chartData_ = {
   } ]
 };
 
-// updateData(_chartData_);
+   var root = {"name":"bubble", "children": [
+{"name":"Atlas","description":"Atlas of Global Agriculture",
+"children":[
+    {"name": "Geography","address":"http://gli.environment.umn.edu", "note":"Global crop geography, including precipitation, temperature, crop area, etc."},
+    {"name": "Crop Land","address":"http://d3js.org"},
+    {"name": "Crop Yields","address":"http://environment.umn.edu", "note":"Maize, wheat, rice, and soybean yields in 2000"}
+]},
+{"name": "AgLab", "description": "Virtual Lab of Global Agriculture",
+"children":[
+    {"name":"Excess Nutrient","address":"http://d3js.org","note":"Prototype Infographics on Excess Fertilizer Nutrients"},
+    {"name":"Yield Gap","address":"http://d3js.org", "note":"The gap between attainable yields and actual yields, with modeled yields assuming the percentage of gap closed."},
+    {"name":"Fertilizer","address":"http://sunsp.net"}
+]},
+{"name":"Nutshell", "description":"Profiles of Country",
+"children":[
+    {"name":"Efficiency","address":"http://d3js.org"},
+    {"name":"Excess Nutrient","address":"http://d3js.org"},
+    {"name":"Economy","address":"http://d3js.org"},
+    {"name":"Agriculture","address":"http://uis.edu/ens"}
+]},
+{"name":"Nutshell2", "description":"Profiles of Country",
+"children":[
+    {"name":"Efficiency","address":"http://d3js.org"},
+    {"name":"Excess Nutrient","address":"http://d3js.org"},
+    {"name":"Agriculture","address":"http://uis.edu/ens"},
+    {"name":"Agriculture","address":"http://uis.edu/ens"},
+    {"name":"Economy","address":"http://d3js.org"},
+    {"name":"Agriculture","address":"http://uis.edu/ens"}
+]},
+{"name":"Data", "description":"Crop Data in 5 minutes grid",
+"children":[
+    {"name":"Geography","address":"http://www.earthstat.org/"},
+    {"name":"Crop Land","address":"http://www.earthstat.org/"},
+    {"name":"Crop Yields","address":"http://www.earthstat.org/"}
+]}
+]};
 
+updateData(_chartData_);
 
-// var root1= {"name":"bubble", "children": [
-// {"name":"Atlas","description":"Atlas of Global Agriculture",
-// "children":[
-//     {"name": "Geography","address":"http://gli.environment.umn.edu", "note":"Global crop geography, including precipitation, temperature, crop area, etc."},
-//     {"name": "Crop Land","address":"http://d3js.org"},
-//     {"name": "Crop Yields","address":"http://environment.umn.edu", "note":"Maize, wheat, rice, and soybean yields in 2000"}
-// ]},
-// {"name": "AgLab", "description": "Virtual Lab of Global Agriculture",
-// "children":[
-//     {"name":"Excess Nutrient","address":"http://d3js.org","note":"Prototype Infographics on Excess Fertilizer Nutrients"},
-//     {"name":"Yield Gap","address":"http://d3js.org", "note":"The gap between attainable yields and actual yields, with modeled yields assuming the percentage of gap closed."},
-//     {"name":"Fertilizer","address":"http://sunsp.net"}
-// ]},
-// {"name":"Nutshell", "description":"Profiles of Country",
-// "children":[
-//     {"name":"Efficiency","address":"http://d3js.org"},
-//     {"name":"Excess Nutrient","address":"http://d3js.org"},
-//     {"name":"Economy","address":"http://d3js.org"},
-//     {"name":"Agriculture","address":"http://uis.edu/ens"}
-// ]},
-// {"name":"Nutshell2", "description":"Profiles of Country",
-// "children":[
-//     {"name":"Efficiency","address":"http://d3js.org"},
-//     {"name":"Excess Nutrient","address":"http://d3js.org"},
-//     {"name":"Agriculture","address":"http://uis.edu/ens"},
-//     {"name":"Agriculture","address":"http://uis.edu/ens"},
-//     {"name":"Economy","address":"http://d3js.org"},
-//     {"name":"Agriculture","address":"http://uis.edu/ens"}
-// ]},
-// {"name":"Data", "description":"Crop Data in 5 minutes grid",
-// "children":[
-//     {"name":"Geography","address":"http://www.earthstat.org/"},
-//     {"name":"Crop Land","address":"http://www.earthstat.org/"},
-//     {"name":"Crop Yields","address":"http://www.earthstat.org/"}
-// ]}
-// ]};
-
-</script></body></html>
+</script>

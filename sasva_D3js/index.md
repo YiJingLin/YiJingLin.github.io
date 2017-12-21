@@ -2,6 +2,7 @@
 
 ## **SAS Visual Analytics - customized chart**
 
+
 ### Usage：
 - software : SAS VA 8.2+
 - load chart's url with "Object > Other > Data Driven Content"
@@ -18,6 +19,7 @@ For more details , see [SAS VA 8.2 - Data Driven Visualization (en)](http://go.d
 
 
 ## **SAS Visual Analytics - 客製化圖表**
+
 
 ### 用法：
 - 軟體 : SAS VA 8.2+

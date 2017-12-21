@@ -1,0 +1,144 @@
+<p>Marimekko Chart see http://bl.ocks.org/mbostock/1005090</p>
+<div id="chart">&nbsp;</div>
+
+<style type="text/css">body {
+  font: 10px sans-serif;
+}
+
+rect {
+stroke: #000;
+}
+
+.label {
+  font-size: 12px;
+  fill: white;
+}
+
+.label2 {
+  font-size: 14px;
+  fill: black;
+}
+ 
+svg {
+  shape-rendering: crispEdges;
+}
+
+#chart {
+margin-bottom: 20px;
+}
+</style>
+<script src="src/d3.v3.min.js"></script>
+<script type="text/javascript">
+  var width = 700, height = 500, margin = 20;
+
+  var color = d3.scale.category20();
+
+  var x = d3.scale.linear()
+   .range([0, width - 3 * margin]);
+
+  var y = d3.scale.linear()
+   .range([0, height - 2 * margin]);
+
+  var n = d3.format(",d"),
+   p = d3.format("%");
+
+  var svg = d3.select("#chart") .append("svg")
+  .attr("width", width)
+  .attr("height", height)
+  .append("g")
+  .attr("transform", "translate(" + 2 * margin + "," + margin + ")");
+
+  var data = [
+  {"month": "04-1854", "cause": "Cholera", "deaths": 1600},
+  {"month": "04-1854", "cause": "Wounds", "deaths": 1440},
+  {"month": "04-1854", "cause": "Fever", "deaths": 960},
+  {"month": "04-1854", "cause": "Other", "deaths": 400},
+  {"month": "03-1854", "cause": "Cholera", "deaths": 3840},
+  {"month": "03-1854", "cause": "Wounds", "deaths": 1920},
+  {"month": "03-1854", "cause": "Fever", "deaths": 960},
+  {"month": "03-1854", "cause": "Other", "deaths": 400},
+  {"month": "05-1854", "cause": "Cholera", "deaths": 640},
+  {"month": "05-1854", "cause": "Wounds", "deaths": 960},
+  {"month": "05-1854", "cause": "Fever", "deaths": 640},
+  {"month": "05-1854", "cause": "Other", "deaths": 400},
+  {"month": "06-1854", "cause": "Cholera", "deaths": 320},
+  {"month": "06-1854", "cause": "Wounds", "deaths": 480},
+  {"month": "06-1854", "cause": "Fever", "deaths": 640},
+  {"month": "06-1854", "cause": "Other", "deaths": 400}
+  ];
+
+  // d3.json("/mydrupal/sites/default/d3_files/json/marimekko6.json", function(error,data) {
+  var offset = 0;
+
+  // Nest values by month. We assume each month + cause is unique.
+  var months = d3.nest()
+    .key(function(d) { 
+       return d.month; 
+       })
+    .entries(data);
+
+  // Compute the total sum, the per-month sum, and the per-cause offset.
+  // You can use reduce rather than reduceRight to reverse the ordering.
+  // We also record a reference to the parent cause for each month.
+  var sum = months.reduce(function(v, p) {
+  return (p.offset = v) + (p.sum = p.values.reduceRight(function(v, d) {
+      d.parent = p;
+      return (d.offset = v) + d.deaths;
+      }, 0));
+  }, 0);
+
+  // Add a group for each cause.
+  var months = svg.selectAll(".month")
+    .data(months)
+  .enter().append("g")
+    .attr("class", "month")
+    .attr("xlink:title", function(d) { 
+       return d.key; })
+    .attr("transform", function(d) { 
+       return "translate(" + x(d.offset / sum) + ")"; 
+     });
+
+  // Add a rect for each month.
+   var causes = months.selectAll (".cause")
+    .data(function(d) { 
+       return d.values; })
+  .enter().append("a")
+    .attr("class", "month")
+    .attr("xlink:title", function(d) { 
+        return d.cause + " " + d.parent.key + ": " + n(d.deaths); });
+
+  causes.append("rect")
+    .attr("y", function(d) { 
+       return y(d.offset / d.parent.sum); })
+    .attr("height", function(d) { 
+       return y(d.deaths / d.parent.sum); })
+    .attr("width", function(d) { 
+       return x(d.parent.sum / sum); })
+    .style("fill", function(d) { 
+       return color(d.cause); 
+    });
+
+  // http://stackoverflow.com/questions/17574621/text-on-each-bar-of-a-stacked-bar-chart-d3-js
+  causes.append("text")
+        .text(function(d) { 
+            return d.cause + " " + n(d.deaths);})
+        .attr("x", 5)
+        .attr("y", function(d) { 
+            return (y(d.offset / d.parent.sum)+20); })
+        .attr("class", "label");
+  causes.append("text")
+        .text(function(d) { 
+            return (" Total: " + d.parent.sum);}) // total
+        .attr("x", 5)
+        .attr("y", function(d) { 
+              return 450 })
+        .attr("class", "label2");
+  causes.append("text")
+        .text(function(d) { 
+            return d.parent.key;}) // month
+        .attr("x", 5)
+        .attr("y", function(d) { 
+              return 480; })
+        .attr("class", "label2");
+  //});
+</script>
