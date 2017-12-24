@@ -3,7 +3,6 @@
 > **speaker** : Soumith Chintala ([profile](http://speech.ee.ntu.edu.tw/~tlkagk/))\
 > **time** : morning, Dec 21, 2017
 
-===========================================================\
 
 # GAN introduction
 
