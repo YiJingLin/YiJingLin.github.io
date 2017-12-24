@@ -59,7 +59,6 @@
 ## Comparision to Classification ConvNets
 - Throw things at the wall and see what sticks
 - intuition is proper
--
 
 ## Tips for Training GANs
 1. Normalize the inputs
@@ -99,7 +98,7 @@
 - Ecosystem
 - model-zoo
 
-## Recent feature
+## Recent work
 - Distributed pytorch
 - Higher order derivatives
 - Broadcasting

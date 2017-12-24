@@ -20,10 +20,9 @@
 ### Discriminator
 - also NN
 - 用於評分
-- bianry classifier
+- bianry classifier (1 for real image, and 0 for fake one)
 
-## interaction
-- fake image label=0
+# special GAN
 
 ## LSGAN(Least Square GAN)
 - 將sigmoid換成linear
@@ -89,7 +88,7 @@ Actor, Env, Reward func
 ## Text Style Translation
 - 賦予文字情感
 - Assumption : 有sentiment classifier.
--Approach
+- Approach
 	1. 調整model本身
 	2. 將model output作為sentiment input得到sentiment output
 	3. Plug & Play
