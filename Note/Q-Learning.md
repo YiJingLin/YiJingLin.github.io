@@ -3,11 +3,13 @@
 
 ## Concept
 1. **Q-table** store values for each step and action \
+
 | step          | action1       | action2   |
 | ------------- |:-------------:| :--------:|
 | **step1.**    | reward		|reward		|
 | **step2.**    | reward        |reward     |
 | **step3.**    | reward        |reward     |
+
 \
 2. At begining of each step, choose highest reward action
 3. After choosing a answer , we'll get real feedback form env.
