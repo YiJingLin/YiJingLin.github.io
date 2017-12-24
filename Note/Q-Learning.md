@@ -12,15 +12,29 @@
 
 - At begining of each status, choose action which has **highest reward** in this status
 - After choosing the action , you'll get **reward and next status from environment**
-- Accroding to this feedback and current status, **update Q-table value** (which choosed at **status2**)
+- According to this feedback and current status, **update Q-table value** (which choosed at **status2**)
 - the main process will play this game several times
 - In each game, you will take actions and update Q-table several times, until you Win or Fail(Optional)
 - Q-Table will be preserved in the end of each game, you can also think Q-Talbe as **global variable** in the main process, so it wont be initialized in the begining of each game.
+- step is different from status, for exmaple, there may be several step with same status.(Think of Maze problem, a point as a status, and sometimes you will at same point in several steps.)
 
 ## Algorithm
 ![algorithm](./source/Q-learning/QLearning_algo.png) \
-the basic Q-learning algorithm.There's two Loop in the algorithm, outer one is for games, and inner one is for each status and actions (in a game). \
-1. 
+the basic Q-learning algorithm.There's two Loop in the algorithm, outer one is for games(episode), and inner one is for status and actions (steps in a game). \
+\
+1. Initialize Q-Table (basically, set all reward = 0.0)
+2. Loop setting for each game (episode) :
+3. Initialize **Status** in the begining of each games
+4. Loop setting for each steps
+5. According to Status *s* in each step, pick the Action *a* with highest reward (greedy method)
+	- **ε-greedy**(Epsilon greedy) : A reward choosing policy. *ε* is a rate value. If *ε* = 0.9, its means Agent will choose maximun reward Action by 90%, and 10% choose randomly.
+	- Also, you can take other policy to pick reward
+6. Take action *a* and then observe the environment feedback (reward and next step status *s'*)
+7. **Update Q-Table's reward you picked** : 
+	- alpha *α* : learning-rate
+	- gama *γ* : decay-rate
+	- *max*Q(*s'*,*a'*) means : derive the highest reward *r'* in Status *s'*
+8. update Status *s* to *s'*
 
 ## Reference
 1. (video) Morvan's Q-Learning tutorial in chinese ([link](https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/2-2-tabular-q1/))
