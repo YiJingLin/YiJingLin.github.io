@@ -3,7 +3,7 @@
 > 台積館 , National Tsing Hua University
 
 
-## Morning Session
+## Morning Session ([link](./GANworkshop%20(Dec%2021%2C%202017)/GANworkshop_1.md))
 > 9:20 - 12:00
 - **Speaker** : Soumith Chintala ([profile](http://speech.ee.ntu.edu.tw/~tlkagk/))
 - **Title** : Generative Models for Images and Videos, a Focus on Adversarial Networks
@@ -24,7 +24,7 @@
 1. Advantage of PyTorch
 2. Recent work
 
-## Afternoon Session
+## Afternoon Session ([link](./GANworkshop%20(Dec%2021%2C%202017)/GANworkshop_2.md))
 > 13:30 - 5:00
 - **Speaker** : 李宏毅 ([profile](https://www.linkedin.com/in/soumith/))
 - **Title** : Generative Adversarial Network and Its Applications on Human Language Processing
