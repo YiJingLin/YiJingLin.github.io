@@ -17,3 +17,5 @@
 6. In each game, you will take actions and update Q-table several times, until you Win or Fail(Optional)
 7. Q-Table will be preserved in the end of each game, you can also think Q-Talbe as **global variable** in the main process, so it wont be initialized in the begining of each game.
 
+## Reference
+1. Morvan's Q-Learning tutorial in chinese ([link](https://morvanzhou.github.io/tutorials/machine-learning/reinforcement-learning/2-2-tabular-q1/))
