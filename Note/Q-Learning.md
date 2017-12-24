@@ -2,13 +2,13 @@
 > Dec 16-23, 2017
 
 ## Concept
-1. **Q-table** store values for each step and action \
+1. **Q-table** store values for each step and action
 
 | step          | action1       | action2   |
 | ------------- |:-------------:| :--------:|
-| **step1.**    | reward		|reward		|
-| **step2.**    | reward        |reward     |
-| **step3.**    | reward        |reward     |
+| **step1.**    | reward1		|reward2	|
+| **step2.**    | reward3       |reward4    |
+| **step3.**    | reward5       |reward6    |
 
 \
 2. At begining of each step, choose highest reward action
