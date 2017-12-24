@@ -10,7 +10,6 @@
 | **step2.**    | reward3       |reward4    |
 | **step3.**    | reward5       |reward6    |
 
-\
 2. At begining of each step, choose highest reward action
 3. After choosing a answer , we'll get real feedback form env.
 4. Accroding to this feedback and step, update Q-table value (which choosed at **step2**)
