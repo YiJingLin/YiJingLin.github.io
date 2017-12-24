@@ -5,7 +5,7 @@
 
 ## Morning Session
 > 9:20 - 12:00
-- **Speaker** : Soumith Chintala ([profile](http://speech.ee.ntu.edu.tw/~tlkagk/))\
+- **Speaker** : Soumith Chintala ([profile](http://speech.ee.ntu.edu.tw/~tlkagk/))
 - **Title** : Generative Models for Images and Videos, a Focus on Adversarial Networks
 - **Outline** :
 
@@ -26,7 +26,7 @@
 
 ## Afternoon Session
 > 13:30 - 5:00
-- **Speaker** : 李宏毅 ([profile](https://www.linkedin.com/in/soumith/))\
+- **Speaker** : 李宏毅 ([profile](https://www.linkedin.com/in/soumith/))
 - **Title** : Generative Adversarial Network and Its Applications on Human Language Processing
 - **Outline** :
 
