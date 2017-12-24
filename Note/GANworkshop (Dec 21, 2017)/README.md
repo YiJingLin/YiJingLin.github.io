@@ -2,7 +2,6 @@
 > Dec 21, 2017 \
 > 台積館 , National Tsing Hua University
 
-# Agenda
 
 ## Morning Session
 > 9:20 - 12:00
