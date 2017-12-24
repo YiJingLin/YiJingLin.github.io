@@ -3,7 +3,6 @@
 > **speaker** : 李宏毅 ([profile](https://www.linkedin.com/in/soumith/))\
 > **time** : afternoon, Dec 21, 2017
 
-===========================================================\
 
 # Introduction to GAN
 
