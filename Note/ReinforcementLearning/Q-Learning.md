@@ -32,7 +32,7 @@ the basic Q-learning algorithm.There's two Loop in the algorithm, outer one is f
 6. Take action *a* and then observe the environment feedback ( reward and next step state *s'* )
 7. **Update Q-Table's reward you picked** : 
 	- alpha *α* : learning-rate
-	- gama *γ* : decay-rate
+	- gamma *γ* : decay-rate
 	- *max*Q(*s'*,*a'*) means : derive the highest reward *r'* in state *s'*
 8. update state *s* to *s'*
 
