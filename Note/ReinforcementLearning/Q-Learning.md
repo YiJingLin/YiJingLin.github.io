@@ -2,7 +2,7 @@
 > Dec 16-23, 2017
 
 ## Concept
-- **Q-table** store values for each state and action
+- **Q-table** store **rewards** for each state and action
 
 | state        | action1       | action2   |
 | ------------- |:-------------:| :--------:|
