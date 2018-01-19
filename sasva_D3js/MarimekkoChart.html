@@ -1,4 +1,4 @@
-<p>Marimekko Chart see http://bl.ocks.org/mbostock/1005090</p>
+<!--<p>Marimekko Chart see http://bl.ocks.org/mbostock/1005090</p>-->
 <div id="chart">&nbsp;</div>
 
 <style type="text/css">body {
@@ -109,9 +109,12 @@ margin-bottom: 20px;
 
   causes.append("rect")
     .attr("y", function(d) { 
+       // return y(d.offset / d.parent.sum); })
        return y(d.offset / d.parent.sum); })
+
     .attr("height", function(d) { 
        return y(d.deaths / d.parent.sum); })
+
     .attr("width", function(d) { 
        return x(d.parent.sum / sum); })
     .style("fill", function(d) { 
@@ -124,6 +127,7 @@ margin-bottom: 20px;
             return d.cause + " " + n(d.deaths);})
         .attr("x", 5)
         .attr("y", function(d) { 
+            // white info. : top margin
             return (y(d.offset / d.parent.sum)+20); })
         .attr("class", "label");
   causes.append("text")
