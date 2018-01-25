@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<style>
+
+text {
+  font: 10px sans-serif;
+}
+
+</style>
+</head>
+<body>
+	<div id="output_div"></div>
+	<div id='img_div'><div>
+</body>
+<script>
+  //called by SAS VA
+    "use strict";
+	function onMessage (evt) {
+	    if (evt && evt.data && evt.data.hasOwnProperty("data"))
+	    {
+	    	var output_div = document.getElementById('output_div');
+	    	if(evt.data.data.length == 0){
+	  			output_div.innerHTML = "URL";
+	    	}else{
+	  			output_div.innerHTML = " ";
+	    		updateData(evt.data);
+	    		// var output_div = document.getElementById('output_div');
+	  			// output_div.innerHTML = JSON.stringify(evt.data);
+	    	}
+	    }
+	}
+
+	if (window.addEventListener) {
+	    // For standards-compliant web browsers
+	    window.addEventListener("message", onMessage, false);
+	}
+	else {
+	    window.attachEvent("onmessage", onMessage);
+	}
+
+  	function updateData(chartData){
+	  // console.log(JSON.stringify(chartData));
+	  // var output_div = document.getElementById('output_div');
+	  // output_div.innerHTML = JSON.stringify(chartData);
+
+	  // derive img url
+	  var retrieveURL = chartData.data[0][0];
+
+	  // clear elements
+	  var img_div = document.getElementById('img_div');
+	  img_div.innerHTML = "";
+	  var img_node = document.createElement("img"); 
+	  img_node.setAttribute("src", retrieveURL);
+	  img_div.appendChild(img_node);
+
+	}
+
+var _chartData_={
+  	"version" : "1",
+  	"rowCount" : 3,
+  	"availableRowCount" : 2,
+  	"data" : [['https://hichang.github.io/url/A1110.png'],
+             ['https://hichang.github.io/url/A1110.png']],
+  	"columns" : [ {
+  		"label" : "dte",
+	  	"type" : "date",
+	  	"usage" : "categorical",
+	  	"format" : {
+	    	"name" : "DDMMYY",
+	    	"width" : 8,
+	    	"precision" : 0,
+	    	"formatString" : "DDMMYY8"
+	  	}
+	}]
+};
+
+// updateData(_chartData_);
+</script>
