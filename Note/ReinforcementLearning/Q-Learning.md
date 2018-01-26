@@ -20,16 +20,16 @@
 
 ## Algorithm
 ![algorithm](./img/QLearning_algo.png) \
-the basic Q-learning algorithm.There's two Loop in the algorithm, outer one is for games(episode), and inner one is for state and actions (steps in a game). \
+the basic Q-learning algorithm, there're two Loop in the algorithm. Outer one is for games(episode), and inner one is for state and actions (steps in a game). \
 
 1. Initialize **Q-Table** (basically, set all reward = 0.0)
 2. Loop setting for each game (episode) :
 3. Initialize **state** in the begining of each games
 4. Loop setting for each steps
 5. According to state *s* in each step, pick the Action *a* with highest reward (greedy method)
-	- **ε-greedy**(Epsilon greedy) : A reward choosing policy. *ε* is a rate value. If *ε* = 0.9, its means Agent will choose maximun reward Action by 90%, and 10% choose randomly.
+	- **ε-greedy**(Epsilon greedy) : A reward choosing policy. *ε* is a rate value. If *ε* = 0.9, its means Agent will choose maximum reward action by 90%, and 10% choose randomly.
 	- Also, you can take other policy to pick reward
-6. Take action *a* and then observe the environment feedback ( reward and next step state *s'* )
+6. Take action *a* and then observe the environment feedback ( reward *r'* and next step state *s'* )
 7. **Update Q-Table's reward you picked** : 
 	- alpha *α* : learning-rate
 	- gamma *γ* : decay-rate
