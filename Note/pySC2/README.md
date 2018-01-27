@@ -1,5 +1,7 @@
-# pySC2 
-a 
+# [pySC2](#)
+
+PySC2 is DeepMind's Python component of the StarCraft II Learning Environment (SC2LE).
+
 ## Quick Started :
 
 ### Installation
