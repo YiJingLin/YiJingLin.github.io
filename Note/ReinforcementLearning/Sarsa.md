@@ -1,8 +1,8 @@
-# Sarsa
+# [Sarsa](#)
 > Jan 17-, 2018
 
 
-## [Algorithm :](#)
+## Algorithm
 ![Sarsa](./img/Sarsa.png) \
 
 the basic Sarsa algorithm, there're two Loop in the algorithm. Outer one is for games(episode), and inner one is for state and actions (steps in a game). \
@@ -24,16 +24,16 @@ the basic Sarsa algorithm, there're two Loop in the algorithm. Outer one is for 
 9. update state *s* to *s'*, action *a* to *a'* (Note that, *a'* will be next step's action.)
 
 
-## [Compare to Q-Learning :](#)
+## Compare to Q-Learning
 As same as Q-Learning, there're two two loop in the algorithm, and **take action** before updateing the Q-Table. \
-The difference between Q-Learning and Sarsa is, **Sarsa's current action was choosed in last step**, and Sarsa doesn't choose max reward action, instead, it choose conservative one. \
+The difference between Q-Learning and Sarsa is, **Sarsa's current action was choosed in last step**, and Sarsa doesn't choose max reward action, instead, it choose conservative one.
 
 - Same decision method (using table to store reward), but different update method to **Q-Learning**
 - Its call **on-policy**, and Q-Learning calls **off-policy**. The difference between two policy is "whether it can learn from record or not".
 - Sarsa is more conservative in process.
 - Sarsa actually choose action which we estimated in last stage.
 
-# Sarsa lambda :
+# [Sarsa lambda](#)
 
 
 
