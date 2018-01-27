@@ -11,10 +11,10 @@ PySC2 is DeepMind's Python component of the StarCraft II Learning Environment (S
 pip install --upgrade pysc2
 ```
 
-2. Then, download and install starcraft2 game software through Battle.net .
+2. Then, download and install starcraft2 game software through [Battle.net](https://tw.battle.net/account/download/index.xml) .
 
 3. Remember to download some Maps and Replays \
-(Note that there's some constraint of directory structure. See details in [link](https://github.com/Blizzard/s2client-proto#downloads))
+(Note that there're some constraints of directory structure. See details in [link](https://github.com/Blizzard/s2client-proto#downloads))
 
 ### Run
 - Run default agent : (not work)
