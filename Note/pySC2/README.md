@@ -23,7 +23,7 @@ pip install --upgrade pysc2
 2. Then, download and install starcraft2 game software through [Battle.net](https://tw.battle.net/account/download/index.xml) .
 
 3. Remember to download some Maps and Replays \
-(Note that there're some constraints of directory structure. See details in [link](https://github.com/Blizzard/s2client-proto#downloads))
+(Note that there're some constraints on directory structure. See details in [link](https://github.com/Blizzard/s2client-proto#downloads))
 
 ### Run
 - Run default agent :
@@ -38,7 +38,7 @@ python -m pysc2.bin.agent --map Simple64
 python -m pysc2.bin.play --map Simple64
 ```
 
-- Run for Replays :
+- Run Replays :
 
 ```sh
 python -m pysc2.bin.replay_actions --replay <absolute path>
