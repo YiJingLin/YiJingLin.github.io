@@ -5,7 +5,16 @@ PySC2 is DeepMind's Python component of the StarCraft II Learning Environment (S
 ## Quick Started :
 
 ### Installation
-1. First of all, install **pysc2** package
+1. First of all, install [pysc2](https://github.com/deepmind/pysc2) package
+
+- install with git-cloned repository (recommend)
+
+```sh
+git clone git@github.com:deepmind/pysc2.git
+pip install pysc2/
+```
+
+- install by **pypi**
 
 ```sh
 pip install --upgrade pysc2
@@ -17,7 +26,7 @@ pip install --upgrade pysc2
 (Note that there're some constraints of directory structure. See details in [link](https://github.com/Blizzard/s2client-proto#downloads))
 
 ### Run
-- Run default agent : (not work)
+- Run default agent :
 
 ```sh
 python -m pysc2.bin.agent --map Simple64
