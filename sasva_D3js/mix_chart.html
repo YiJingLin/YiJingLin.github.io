@@ -1,18 +1,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <canvas id="chart" width="800" height="450"></canvas>
-
+<div id="hint">you need 1 categorical data & n numerical data</div>
 <script type="text/javascript">
 	"use strict";
 	function onMessage (evt) {
 	    if (evt && evt.data && evt.data.hasOwnProperty("data"))
 	    {
 	    	if(evt.data.data.length == 0){
-	    		var output_div = document.getElementById('output_div');
-	  			output_div.innerHTML = "empty";
+	    		updateData(_chartData_);
 	    	}else{
-	    		var output_div = document.getElementById('output_div');
-	  			output_div.innerHTML = JSON.stringify(evt.data.data);
-	  			updateData(evt.data);
+	    		document.getElementById("hint").innerHTML="";
+         		updateData(evt.data);
 	    	}
 	    }
 	}
