@@ -1,0 +1,181 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<canvas id="chart" width="800" height="450"></canvas>
+
+<script type="text/javascript">
+	"use strict";
+	function onMessage (evt) {
+	    if (evt && evt.data && evt.data.hasOwnProperty("data"))
+	    {
+	    	if(evt.data.data.length == 0){
+	    		var output_div = document.getElementById('output_div');
+	  			output_div.innerHTML = "empty";
+	    	}else{
+	    		var output_div = document.getElementById('output_div');
+	  			output_div.innerHTML = JSON.stringify(evt.data.data);
+	    	}
+	    }
+	}
+	if (window.addEventListener) {
+	    // For standards-compliant web browsers
+	    window.addEventListener("message", onMessage, false);
+	}
+	else {
+	    window.attachEvent("onmessage", onMessage);
+	}
+
+
+	function transposeArray(array){
+	    var newArray = [];
+	    for(var i = 0; i < array[0].length; i++){
+	        newArray.push([]);
+	    };
+
+	    for(var i = 0; i < array.length; i++){
+	        for(var j = 0; j < array[0].length; j++){
+	            newArray[j].push(array[i][j]);
+	        };
+	    };
+
+	    return newArray;
+	}
+
+
+	function get_columns(chartData){
+		var columns = [];
+		for(var i=0; i<chartData.columns.length; i++){
+			columns.push(chartData.columns[i].label)
+		}
+
+		return columns;
+	}
+
+
+	function create_chart_data(trans_data, columns){
+		// [{
+  //         label: 'Bar Dataset',
+  //         data: trans_data[0],
+  //       }, {
+  //         label: 'Line Dataset',
+  //         data: [20, 30, 40, 50],
+
+  //         // Changes this dataset to become a line
+  //         type: 'line'
+  //       }, {
+  //         label: 'Line Dataset',
+  //         data: [30, 40, 50, 40],
+
+  //         // Changes this dataset to become a line
+  //         type: 'line'
+  //       }]
+		var data = {
+		  	labels: trans_data[0],
+		};
+		var color_num = [54, 162, 235];
+
+  		var datasets = [];
+
+  		var bar_data = {
+          "label" : columns[1],
+          "data" : trans_data[1],
+          "yAxisID" : "Bar_scale",
+          "borderColor":"rgb(255, 99, 132)",
+		  "backgroundColor":"rgba(255, 99, 132, 0.2)",
+        };
+        datasets.push(bar_data);
+
+        for(var i=2; i<trans_data.length;i++){
+        	var line_data = {
+	          "label" : columns[i],
+	          "data" : trans_data[i],
+	          "type" : "line",
+	          "yAxisID" : "Line_scale",
+	          "fill" : false,
+	          "borderColor" : "rgb("+color_num[i%3]+","+color_num[(i+1)%3]+","+color_num[(i+2)%3]+")",
+        	};
+        	datasets.push(line_data);
+        }
+
+       data.datasets = datasets;
+       console.log(datasets);
+       return data;
+
+       
+	}
+
+
+	function updateData(chartData){
+		var trans_data = transposeArray(chartData.data);
+		var columns = get_columns(chartData);
+		var data = create_chart_data(trans_data, columns);
+		var ctx = document.getElementById("chart");
+		var mixedChart = new Chart(ctx, {
+		  "type" : 'bar',
+		  "data" : data,
+		  "options" : {
+		  	"elements" : {
+		        "line" : {
+		            "tension" : 0
+		        }
+		    },
+			"scales":{
+				"yAxes" : [{
+			        id: 'Bar_scale',
+			        type: 'linear',
+			        position: 'left',
+		      	}, {
+			        id: 'Line_scale',
+			        type: 'linear',
+			        position: 'right',
+		      	}]
+			}
+		  }
+		});
+		// return data;
+	}
+
+
+//SAS data
+var _chartData_ = {
+  "version" : "1",
+  "rowCount" : 18,
+  "availableRowCount" : 18,
+  // there's 4 data and two parameter each
+  "data" : [[37,43727317.310000025,103146,423.93614207046346],[38,45323672.74000003,111230,407.47705421199345],[39,43443567.53000001,103112,421.3240702343084],[40,14731411.269999996,42328,348.0299392836892],[41,38927326.970000006,98413,395.55065865282035]],
+  //each column info : there should be same number as data parameter 
+  "columns" : [ {
+  "label" : "Class",
+  "type" : "date",
+  "usage" : "categorical",
+  "format" : {
+    "name" : "DDMMYY",
+    "width" : 8,
+    "precision" : 0,
+    "formatString" : "DDMMYY8"
+  }
+  }, {
+  "label" : "Class2",
+  "type" : "date",
+  "usage" : "categorical",
+  "format" : {
+    "name" : "DDMMYY",
+    "width" : 8,
+    "precision" : 0,
+    "formatString" : "DDMMYY8"
+  }
+  }, {
+  "label" : "sales",
+  "type" : "number",
+  "usage" : "quantitative",
+  "aggregation" : "sum",
+  "format" : {
+    "name" : "BEST",
+    "width" : 12,
+    "precision" : 0,
+    "formatString" : "BEST12."
+  }
+  } ]
+};
+
+// updateData(_chartData_);
+
+</script>
