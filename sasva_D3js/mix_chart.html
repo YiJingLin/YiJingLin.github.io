@@ -1,8 +1,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-<div width="800">
-	<canvas id="chart" width="700" height="450"></canvas>
-</div>
 <div id="hint">you need 1 categorical data & n numerical data</div>
+<canvas id="chart" width="800" height="450"></canvas>
 <script type="text/javascript">
 	"use strict";
 	function onMessage (evt) {
@@ -75,14 +73,9 @@
 
   		var datasets = [];
 
-  		var bar_data = {
-          "label" : columns[1],
-          "data" : trans_data[1],
-          "yAxisID" : "Bar_scale",
-          "borderColor":"rgb(255, 99, 132)",
-		  "backgroundColor":"rgba(255, 99, 132, 0.2)",
-        };
-        datasets.push(bar_data);
+  		
+
+        var color_list = ["rgb(0, 204, 0)", "rgb(255, 153, 0)", "rgb(128, 0, 128)"];
 
         for(var i=2; i<trans_data.length;i++){
         	var line_data = {
@@ -91,10 +84,19 @@
 	          "type" : "line",
 	          "yAxisID" : "Line_scale",
 	          "fill" : false,
-	          "borderColor" : "rgb("+color_num[i%3]+","+color_num[(i+1)%3]+","+color_num[(i+2)%3]+")",
+	          "borderColor" : color_list[i-2],
         	};
         	datasets.push(line_data);
         }
+
+        var bar_data = {
+          "label" : columns[1],
+          "data" : trans_data[1],
+          "yAxisID" : "Bar_scale",
+          // "borderColor":"rgb(255, 99, 132)",
+		  "backgroundColor":"rgb(0, 179, 179)",
+        };
+        datasets.push(bar_data);
 
        data.datasets = datasets;
        console.log(datasets);
@@ -141,7 +143,7 @@ var _chartData_ = {
   "rowCount" : 18,
   "availableRowCount" : 18,
   // there's 4 data and two parameter each
-  "data" : [[37,43727317.310000025,103146,423.93614207046346],[38,45323672.74000003,111230,407.47705421199345],[39,43443567.53000001,103112,421.3240702343084],[40,14731411.269999996,42328,348.0299392836892],[41,38927326.970000006,98413,395.55065865282035]],
+  "data" : [[37,437.310000025,510,423.93, 878.0],[38,453.74000003,111,407.47, 210],[39,434.53000001,103,  421.3240702343084,100],[40,147.269,423,348.0299392836892, 400],[41,389.970000006,98,395.55065865282035, 260]],
   //each column info : there should be same number as data parameter 
   "columns" : [ {
   "label" : "Class",
