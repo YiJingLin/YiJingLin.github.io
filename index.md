@@ -1,6 +1,6 @@
 ## Welcome to YiJing's GitHub Pages
 
-Hi! My name is Lin.YiJing. I am studying  Electrical Engineering and Computer Science, National Taiwan University.
+Hi! My name is Lin.YiJing. I am studying  Electrical Engineering and Computer Science at National Taiwan University.
 
 
 ### Markdown
