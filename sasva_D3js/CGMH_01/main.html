@@ -68,7 +68,7 @@
 </style>
 </head>
 <body>
-<div id="hint">no data</div>
+<!-- <div id="hint">no data</div> -->
 <div id="d3container" class="container">
 	<div id="img_body_front_container" class="img_body_container">
 		<img id="img_body_front" class="img_body" src="./imgs/body/man_front.png" />
@@ -100,15 +100,23 @@
     //called by SAS VA
     "use strict";
 	function onMessage (evt) {
-	    var hint = document.getElementById("hint");
+// 	    var hint = document.getElementById("hint");
 	    if (evt && evt.data && evt.data.hasOwnProperty("data"))
 	    {
-		hint.innerHTML = "sas data";
+// 		hint.innerHTML = "sas data";
 	    	renderChart(evt.data);
 	    } else {
-		hint.innerHTML = " test data";
+// 		hint.innerHTML = " test data";
 		renderChart(_testData_);
 	    }
+	}
+	
+	if (window.addEventListener) {
+	    // For standards-compliant web browsers
+	    window.addEventListener("message", onMessage, false);
+	}
+	else {
+	    window.attachEvent("onmessage", onMessage);
 	}
 
 	// if (window.addEventListener) {
