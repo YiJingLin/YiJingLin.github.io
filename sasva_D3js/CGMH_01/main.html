@@ -1,0 +1,497 @@
+  
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+<style>
+	
+	@media all and (max-width: 500px) {
+		table {display: none;}
+		.img_body_container {width: 45%;}
+	}
+	@media all and (min-width: 500px) {
+		.img_body_container {width: 25%;}
+	}
+
+	text {
+	  font: 10px sans-serif;
+	}
+
+	.img_body_container {
+		display: inline-block;
+		position: relative;
+		/* width: 25%; */
+		/* padding-bottom: 100%; */
+		top:5%;
+		vertical-align: top;
+		overflow: hidden;
+	}
+	
+	#d3container {
+		display:inline-block;
+		position: relative;
+		width: 100%;
+		margin-top: 10%;
+		/* padding-bottom: 100%; */
+		padding-bottom: 60vw;
+		overflow: hidden;
+	}
+	
+	
+	
+	.img_body {
+		max-width: 100%;
+		max-height: 100%;
+	}
+	
+	.tag {
+		max-width:10%;
+		/* max-height:5%; */
+		position: absolute;
+	}
+	
+	.table_container {
+		display: inline-block;
+		position: relative;
+		width: 45%;
+		height: 30vw ; /* 0.4 * 60 */
+		overflow: auto;  /* scrollable */
+	}
+
+	table {
+		width:100%;
+		font-size:10px;
+	}
+	
+	
+</style>
+</head>
+<body>
+<div id="d3container" class="container">
+	<div id="img_body_front_container" class="img_body_container">
+		<img id="img_body_front" class="img_body" src="./imgs/body/man_front.png" />
+		<div id="tag_front_container"></div>
+	</div>
+	<div id="img_body_back_container" class="img_body_container">
+		<img id="img_body_back" class="img_body" src="./imgs/body/man_back.png" />
+		<div id="tag_back_container"></div>
+	</div>
+	<div id="table_container" class="table_container">
+		<table id="table" class="table table-striped">
+			 <!-- <tr>
+				<th scope="row">1</th>
+				<td>Maria Anders</td>
+				<td>Germany</td>
+			</tr>  -->
+			
+		</table>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+<script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+<script src="d3.v5.min.js" charset="utf-8"></script>
+<script>
+	
+    //called by SAS VA
+    "use strict";
+	function onMessage (evt) {
+	    if (evt && evt.data && evt.data.hasOwnProperty("data"))
+	    {
+	    	renderChart(evt.data);
+	    } else {
+			renderChart(_testData_);
+		}
+	}
+
+	// if (window.addEventListener) {
+	//     // For standards-compliant web browsers
+	//     window.addEventListener("message", onMessage, false);
+	// }
+	// else {
+	//     window.attachEvent("onmessage", onMessage);
+	// }
+	
+  	// function updateData(chartData){
+	// //   console.log(JSON.stringify(chartData));
+	//   console.log(JSON.stringify(chartData));
+	//   var output_div = document.getElementById('output_div');
+	//   output_div.innerHTML = JSON.stringify(chartData);
+	// }	
+
+
+	// d3.select("#tag_front_1")
+	// .attr("marginLeft", "10%")
+	// .attr("marginTop", "20%");
+
+	// d3.selectAll("div").selectAll("*").remove();
+
+	var nChannel;
+	var existCoordinates;
+	var overlappedCoordinates;
+
+	function addChannelIcon(channelId, side, channelType, X, Y) { 
+		// side (bool): front:True, back:False 
+		// channelType (Int): 
+		// X (int): x/40  
+		// Y (int): y/72
+
+		// get parent element
+		if (side == "正面") {
+			// var container = document.getElementById('img_body_front_container');
+			var container = document.getElementById('tag_front_container');
+		} else {
+			// var container = document.getElementById('img_body_back_container');
+			var container = document.getElementById('tag_back_container');
+		}
+
+		// create new icon tag
+		var imgTag = document.createElement('img');
+		imgTag.classList.add("tag");
+		imgTag.id = "tag_" + channelId;
+
+		// get icon source
+		imgTag.src = './imgs/tag/' + channelType + '.png';
+		
+		// coordinate 
+		X = 100 * (X-2) / 40;
+		Y = 100 * (Y-2) / 72;
+		imgTag.style =  "left: " + X + "%; top: " + Y + "%;";
+
+		// add event
+		imgTag.addEventListener("click", function(){
+			var rows = document.getElementsByTagName("tr");
+			for (var i =0; i< rows.length; i++){
+				rows[i].style.backgroundColor = "white";
+			}
+			var row_id = "row_" + channelId; 
+			var row = document.getElementById(row_id);
+			row.style.backgroundColor = "gray";
+
+			var icons = document.getElementsByClassName("tag");
+			for (var i =0; i< icons.length; i++){
+				icons[i].style.opacity = "0.3";
+			}
+			var icon_id = "tag_" + channelId; 
+			var icon = document.getElementById(icon_id);
+			icon.style.opacity = "1.0";
+		});
+
+		// finally, append to container
+		container.appendChild(imgTag);
+	}
+
+	function getNewChannelId(){
+		var newId = nChannel + 1;
+		nChannel += 1;
+		return newId;
+	}
+
+	function addTableRow(channelId, channelType, typeName, channelText, day, nTime) {
+
+		// create html table row element, then append back to table
+		var table = document.getElementById("table");
+		var newTableRow = document.createElement('tr');
+		newTableRow.id = "row_" + channelId;
+		
+		// var newIdCol = document.createElement('th');
+		// newIdCol.scope = "row";
+		// newIdCol.innerText = channelId;
+		// newTableRow.appendChild(newIdCol);
+
+		var newIconCol = document.createElement('th');
+		newIconCol.scope = "row";
+		newIconCol.style.width = "12%";
+		var imgTag = document.createElement('img');
+		imgTag.src = './imgs/tag/' + channelType + '.png';
+		imgTag.style.width = "100%";
+		newIconCol.appendChild(imgTag);
+		newTableRow.appendChild(newIconCol);
+		
+		// var newTypeNameCol = document.createElement('td');
+		// newTypeNameCol.innerText = typeName;
+		// newTableRow.appendChild(newTypeNameCol);
+		
+		var newChannelTextCol = document.createElement('td');
+		newChannelTextCol.innerText = channelText;
+		newTableRow.appendChild(newChannelTextCol);
+		
+		var newDayCol = document.createElement('td');
+		newDayCol.style.width = "20%";
+		newDayCol.innerText = day + " days";
+		newTableRow.appendChild(newDayCol);
+
+		var newNTimeCol = document.createElement('td');
+		newNTimeCol.style.width = "20%";
+		newNTimeCol.innerText = nTime + " time(s)";
+		newTableRow.appendChild(newNTimeCol);
+
+		// add event
+		newTableRow.addEventListener("click", function(){
+			var rows = document.getElementsByTagName("tr");
+			for (var i =0; i< rows.length; i++){
+				rows[i].style.backgroundColor = "white";
+			}
+			var row_id = "row_" + channelId; 
+			var row = document.getElementById(row_id);
+			row.style.backgroundColor = "gray";
+
+			var icons = document.getElementsByClassName("tag");
+			for (i =0; i< icons.length; i++){
+				icons[i].style.opacity = "0.3";
+			}
+			var icon_id = "tag_" + channelId; 
+			var icon = document.getElementById(icon_id);
+			icon.style.opacity = "1.0";
+		});
+
+		// append back to table
+		table.appendChild(newTableRow);
+
+	}
+
+	function addOverlappedChannelIcon(coordinateCode, side, X, Y) { 
+		// side (bool): front:True, back:False 
+		// channelType (Int): 
+		// X (int): x/40  
+		// Y (int): y/72
+
+		// get parent element
+		if (side == "正面") {
+			// var container = document.getElementById('img_body_front_container');
+			var container = document.getElementById('tag_front_container');
+		} else {
+			// var container = document.getElementById('img_body_back_container');
+			var container = document.getElementById('tag_back_container');
+		}
+
+		// create new icon tag
+		var imgTag = document.createElement('img');
+		imgTag.classList.add("tag");
+		imgTag.id = "tag_" + coordinateCode;
+
+		// get icon source
+		imgTag.src = './imgs/tag/star.png';
+		
+		// coordinate (top-right of the original coordinate)
+		X = 100 * (X-2+2) / 40;
+		Y = 100 * (Y-2-2) / 72;
+		imgTag.style =  "left: " + X + "%; top: " + Y + "%; max-width: 8%;";
+		imgTag.alt = "hi";
+		// add event
+		imgTag.addEventListener("click", function(){
+
+			// rows
+			var rows = document.getElementsByTagName("tr");
+			for (var i =0; i< rows.length; i++){
+				rows[i].style.backgroundColor = "white";
+			}
+
+			for (var i =0; i<overlappedCoordinates[coordinateCode].length; i++){
+				var row_id = "row_" + overlappedCoordinates[coordinateCode][i]; 
+				var row = document.getElementById(row_id);
+				row.style.backgroundColor = "gray";
+			}
+			
+
+			// icons
+			var icons = document.getElementsByClassName("tag");
+			for (var i =0; i< icons.length; i++){
+				icons[i].style.opacity = "0.3";
+			}
+			var icon_id = "tag_" + coordinateCode; 
+			var icon = document.getElementById(icon_id);
+			icon.style.opacity = "1.0";
+		});
+
+		// finally, append to container
+		container.appendChild(imgTag);
+	}
+	
+
+	function checkAndAddChannelOverlapped(channelId, side, X, Y) {
+		var coordinateCode = 1000 * X + Y;
+		if (side == "反面") {
+			coordinateCode *= -1; // negative number
+		}
+		if (coordinateCode in existCoordinates) {
+			// coordinate not exist
+			if (!(coordinateCode in overlappedCoordinates)) {
+				// init overlapCoordinates list, for multiple row selected
+				overlappedCoordinates[coordinateCode] = [existCoordinates[coordinateCode]];
+
+				// init icon
+				addOverlappedChannelIcon(coordinateCode=coordinateCode, side=side, X=X, Y=Y);
+			}
+			overlappedCoordinates[coordinateCode].push(channelId);
+
+		} else {
+			// first time
+			existCoordinates[coordinateCode] = channelId;
+		}
+	}
+
+	
+
+	function addData(dataRow) {
+		// extract values
+		var day 		= dataRow[5]; // 管路天數
+		var channelText = dataRow[6]; // 管路文字
+		var typeName 	= dataRow[7]; // 分類名稱
+		var channelType = dataRow[8]; // 管路類別
+		var side		= dataRow[10]; // 人形圖位置：Front(正面)/Back(反面)
+		var nTime		= dataRow[11]; // 插管次數
+		var X			= dataRow[12]; // 管路座標X
+		var Y			= dataRow[13]; // 管路座標Y
+
+		// get new data Id
+		var channelId = getNewChannelId();
+
+
+		addChannelIcon(channelId = channelId, side=side, channelType=channelType, X=X, Y=Y);
+		addTableRow(channelId = channelId, channelType=channelType, typeName=typeName, channelText=channelText, day=day, nTime=nTime);
+		checkAndAddChannelOverlapped(channelId=channelId, side=side, X=X, Y=Y);
+	}	
+
+	// render male/female/child body images 
+	function renderBodyImg(ageType, sex){
+		var body_front 	= document.getElementById("img_body_front");
+		var body_back 	= document.getElementById("img_body_back");
+
+		if (ageType == "幼童") {
+			body_front.src = "./imgs/body/baby_front.png";
+			body_back.src = "./imgs/body/baby_back.png";
+		} else if (sex == "M") {
+			body_front.src = "./imgs/body/man_front.png";
+			body_back.src = "./imgs/body/man_back.png";
+		} else {
+			body_front.src = "./imgs/body/woman_front.png";
+			body_back.src = "./imgs/body/woman_back.png";
+		}
+	}	
+
+	// check all channel data is belongs to one patience
+	function onlyPatience(data) {
+		var userId = data.data[0][2];
+		for (var i = 1; i < data.data.length; i++) {
+			if (userId != data.data[i][2]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// clear all previous elements
+	function reset(){
+		//// parameters
+		nChannel = 0
+		existCoordinates = {};
+		overlappedCoordinates = {};
+
+		//// UI 
+		// front
+		var tag_front_container = document.getElementById('tag_front_container');
+		tag_front_container.innerHTML = '';
+		// back
+		var tag_back_container = document.getElementById('tag_back_container');
+		tag_back_container.innerHTML = '';
+		// table
+		var table = document.getElementById("table");
+		table.innerHTML = '';
+		
+		// table.innerHTML = 
+		// 	"<tr>" +
+		// 		"<th scope='col'>圖示</th>" +
+		// 		"<th scope='col'>管路文字</th>" +
+		// 		"<th scope='col'>管路天數</th>" +
+		// 		"<th scope='col'>插管次數</th>" +
+		// 	"</tr>";
+	}
+
+
+	// main function
+	function renderChart(data) {
+		// clear previous elements
+		reset();
+
+		if (onlyPatience(data)) {
+
+			// render body
+			var ageType 	= data.data[0][0]; // 病人類別：Adult(成人)/Child(幼童)
+			var sex 		= data.data[0][1]; //  性別：Male(M)/Female(F)
+			renderBodyImg(ageType=ageType, sex=sex);
+
+			// add channel icons and table rows 
+			for (var i = 0; i < data.data.length; i++) {
+				var dataRow = data.data[i];
+				addData(dataRow);
+			}
+
+		} else {
+
+			alert('multiple patiences data exist');
+
+		}
+
+		
+	}
+
+
+	/* ================ test UI code ================ */
+	
+	
+
+	// tag icon
+	// addChannelIcon(channelId = 0, side="正面", channelType=1, X=10, Y=18);	
+	// addChannelIcon(channelId = 0, side="正面", channelType=1, X=30, Y=18);
+	// addChannelIcon(channelId = 0, side="反面", channelType=1, X=30, Y=18);
+	// addChannelIcon(channelId = 0, side="正面", channelType=1, X=0, Y=0);
+
+	// addChannelIcon(channelId=0, side="反面", channelType=11, X=0, Y=72);
+	// addChannelIcon(channelId=0, side="反面", channelType=11, X=40, Y=0);
+	// addChannelIcon(channelId=0, side="反面", channelType=11, X=0, Y=0);
+	// addChannelIcon(channelId=0, side="反面", channelType=11, X=40, Y=72);
+
+
+	// test data
+	var _testData_ = {'version': '1',
+		'rowCount': 12,
+		'availableRowCount': 12,
+		'data': [['成人', 'M', 3, '2020-07-29 21:07:00', 'NaT', 8,
+				'PCVC LINE（CAVA LINE）（經皮植入靜脈導管）', '靜脈導管', 11.0, '右下肢', '正面', 1,
+				13, 30],
+				['成人', 'M', 3, '2020-07-28 21:07:00', 'NaT', 9, 'PCN（經皮腎造口管）',
+				'導尿', 10.0, '右後腰', '反面', 5, 26, 29],
+				['成人', 'M', 3, '2020-07-15 17:15:00', '2020-07-30 10:41:00', 9,
+				'Double Lumen(雙腔靜脈導管)', '透析', 7.0, '右側鼠蹊', '正面', 1, 16, 36],
+				['成人', 'M', 3, '2020-07-27 21:07:00', '2020-08-03 08:25:00', 3,
+				'Rectal tube (肛管)', '引流', 3.0, '肛門', '反面', 1, 20, 37],
+				['成人', 'M', 3, '2020-07-01 17:40:00', '2020-07-30 13:30:00', 30,
+				'Tracheostomy(氣管造口器)', '呼吸器', 4.0, '胸部', '正面', 2, 20, 14],
+				['成人', 'M', 3, '2020-06-08 15:00:00', '2020-07-01 17:40:00', 24,
+				'Endotracheal(氣管內管)', '呼吸器', 4.0, '胸部', '正面', 1, 20, 14],
+				['成人', 'M', 3, '2020-07-11 12:32:00', '2020-07-17 05:29:00', 7,
+				'Foley-Rubber(導尿管)', '導尿', 10.0, '會陰', '正面', 3, 20, 38],
+				['成人', 'M', 3, '2020-07-26 21:07:00', '2020-08-01 08:25:00', 7,
+				'Foley-Rubber(導尿管)', '導尿', 10.0, '會陰', '正面', 4, 20, 38],
+				['成人', 'M', 3, '2020-06-10 15:00:00', '2020-06-16 10:10:00', 7,
+				'Foley-Rubber(導尿管)', '導尿', 10.0, '會陰', '正面', 1, 20, 38],
+				['成人', 'M', 3, '2020-06-29 13:52:00', '2020-07-05 10:45:00', 7,
+				'Foley-Rubber(導尿管)', '導尿', 10.0, '會陰', '正面', 2, 20, 38],
+				['成人', 'M', 3, '2020-06-07 15:00:00', '2020-06-20 09:45:00', 14,
+				'NG-Rubber（鼻胃管）', '鼻胃管', 9.0, '鼻子', '正面', 1, 20, 7],
+				['成人', 'M', 3, '2020-06-20 09:45:00', '2020-07-20 09:58:00', 31,
+				'NG-Silicon(矽膠鼻胃管)', '鼻胃管', 9.0, '鼻子', '正面', 2, 20, 7]],
+		'columns': []};
+
+		// renderChart(_testData_);
+
+	
+</script>
+</body>
+</html>
+
+
