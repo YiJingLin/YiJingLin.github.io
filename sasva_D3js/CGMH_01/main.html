@@ -144,6 +144,7 @@
 	var nChannel;
 	var existCoordinates;
 	var overlappedCoordinates;
+	var channelTypeDict;
 
 	function addChannelIcon(channelId, side, channelType, removeDate, X, Y) {
 		// side (bool): front:True, back:False 
@@ -180,13 +181,22 @@
 
 		// add event
 		imgTag.addEventListener("click", function(){
+			
+			// highlight all rows with same channelType
 			var rows = document.getElementsByTagName("tr");
+			var tmpChannelTypeDict = channelTypeDict[channelType];
+			console.log(tmpChannelTypeDict);
 			for (var i =0; i< rows.length; i++){
-				rows[i].style.backgroundColor = "white";
+				var tmpId = rows[i].id;
+				tmpId = parseInt(tmpId.split("_")[1]);
+				if (tmpChannelTypeDict.has(tmpId)) {
+					console.log(tmpId);
+					rows[i].style.backgroundColor = "gray";
+				} else {
+					rows[i].style.backgroundColor = "white";
+				}
+				
 			}
-			var row_id = "row_" + channelId; 
-			var row = document.getElementById(row_id);
-			row.style.backgroundColor = "gray";
 
 			var icons = document.getElementsByClassName("tag");
 			for (var i =0; i< icons.length; i++){
@@ -282,6 +292,13 @@
 		// append back to table
 		table.appendChild(newTableRow);
 
+	}
+
+	function addChannelTypeDict(channelId, channelType) {
+		if (!(channelType in channelTypeDict)) {
+			channelTypeDict[channelType] = new Set();
+		}
+		channelTypeDict[channelType].add(channelId);
 	}
 
 	function addOverlappedChannelIcon(coordinateCode, side, X, Y) { 
@@ -391,6 +408,7 @@
 
 		addChannelIcon(channelId = channelId, side=side, channelType=channelType, removeDate=removeDate, X=X, Y=Y);
 		addTableRow(channelId = channelId, channelType=channelType, typeName=typeName, channelText=channelText, startDate=startDate, removeDate=removeDate, day=day, nTime=nTime);
+		addChannelTypeDict(channelId=channelId, channelType=channelType);
 		checkAndAddChannelOverlapped(channelId=channelId, side=side, X=X, Y=Y);
 	}	
 
@@ -428,6 +446,7 @@
 		nChannel = 0
 		existCoordinates = {};
 		overlappedCoordinates = {};
+		channelTypeDict = {};
 
 		//// UI 
 		// front
