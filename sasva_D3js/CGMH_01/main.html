@@ -202,7 +202,7 @@
 		return newId;
 	}
 
-	function addTableRow(channelId, channelType, typeName, channelText, day, nTime) {
+	function addTableRow(channelId, channelType, typeName, channelText, startDate, removeDate, day, nTime) {
 
 		// create html table row element, then append back to table
 		var table = document.getElementById("table");
@@ -231,6 +231,14 @@
 		newChannelTextCol.innerText = channelText;
 		newTableRow.appendChild(newChannelTextCol);
 		
+		var newStartDateCol = document.createElement('td');
+		newStartDateCol.innerText =  startDate.substring(1, 16);
+		newTableRow.appendChild(newStartDateCol);
+
+		var newRemoveDateCol = document.createElement('td');
+		newRemoveDateCol.innerText = removeDate.substring(1, 16);
+		newTableRow.appendChild(newRemoveDateCol);
+
 		var newDayCol = document.createElement('td');
 		newDayCol.style.width = "20%";
 		newDayCol.innerText = day + " days";
@@ -350,6 +358,8 @@
 
 	function addData(dataRow) {
 		// extract values
+		var startDate   = dataRow[3]; // 安裝日期
+		var removeDate  = dataRow[4]; // 移除日期
 		var day 		= dataRow[5]; // 管路天數
 		var channelText = dataRow[6]; // 管路文字
 		var typeName 	= dataRow[7]; // 分類名稱
@@ -364,7 +374,7 @@
 
 
 		addChannelIcon(channelId = channelId, side=side, channelType=channelType, X=X, Y=Y);
-		addTableRow(channelId = channelId, channelType=channelType, typeName=typeName, channelText=channelText, day=day, nTime=nTime);
+		addTableRow(channelId = channelId, channelType=channelType, typeName=typeName, channelText=channelText, startDate=startDate, removeDate=removeDate, day=day, nTime=nTime);
 		checkAndAddChannelOverlapped(channelId=channelId, side=side, X=X, Y=Y);
 	}	
 
