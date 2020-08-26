@@ -253,7 +253,11 @@
 		newTableRow.appendChild(newStartDateCol);
 
 		var newRemoveDateCol = document.createElement('td');
-		newRemoveDateCol.innerText = removeDate.substring(0, 16);
+		if (removeDate == "NaT") {
+			newRemoveDateCol.innerText = "";
+		} else {
+			newRemoveDateCol.innerText = removeDate.substring(0, 16);
+		}
 		newTableRow.appendChild(newRemoveDateCol);
 
 		var newDayCol = document.createElement('td');
@@ -324,8 +328,8 @@
 		imgTag.src = './imgs/tag/star.png';
 		
 		// coordinate (top-right of the original coordinate)
-		X = 100 * (X-2+2) / 40;
-		Y = 100 * (Y-2-2) / 72;
+		X = 100 * (X-2) / 40;
+		Y = 100 * (Y-2) / 72;
 		imgTag.style =  "left: " + X + "%; top: " + Y + "%; max-width: 8%;";
 		imgTag.alt = "hi";
 		// add event
