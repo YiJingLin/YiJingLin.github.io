@@ -232,11 +232,11 @@
 		newTableRow.appendChild(newChannelTextCol);
 		
 		var newStartDateCol = document.createElement('td');
-		newStartDateCol.innerText =  startDate.substring(1, 16);
+		newStartDateCol.innerText =  startDate.substring(0, 16);
 		newTableRow.appendChild(newStartDateCol);
 
 		var newRemoveDateCol = document.createElement('td');
-		newRemoveDateCol.innerText = removeDate.substring(1, 16);
+		newRemoveDateCol.innerText = removeDate.substring(0, 16);
 		newTableRow.appendChild(newRemoveDateCol);
 
 		var newDayCol = document.createElement('td');
