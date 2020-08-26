@@ -216,7 +216,7 @@
 
 		var newIconCol = document.createElement('th');
 		newIconCol.scope = "row";
-		newIconCol.style.width = "12%";
+		newIconCol.style.width = "10%";
 		var imgTag = document.createElement('img');
 		imgTag.src = './imgs/tag/' + channelType + '.png';
 		imgTag.style.width = "100%";
@@ -228,6 +228,7 @@
 		// newTableRow.appendChild(newTypeNameCol);
 		
 		var newChannelTextCol = document.createElement('td');
+		newChannelTextCol.style.width = "30%"
 		newChannelTextCol.innerText = channelText;
 		newTableRow.appendChild(newChannelTextCol);
 		
@@ -240,12 +241,12 @@
 		newTableRow.appendChild(newRemoveDateCol);
 
 		var newDayCol = document.createElement('td');
-		newDayCol.style.width = "20%";
+		newDayCol.style.width = "10%";
 		newDayCol.innerText = day + " days";
 		newTableRow.appendChild(newDayCol);
 
 		var newNTimeCol = document.createElement('td');
-		newNTimeCol.style.width = "20%";
+		newNTimeCol.style.width = "10%";
 		newNTimeCol.innerText = nTime + " time(s)";
 		newTableRow.appendChild(newNTimeCol);
 
@@ -368,6 +369,11 @@
 		var nTime		= dataRow[11]; // 插管次數
 		var X			= dataRow[12]; // 管路座標X
 		var Y			= dataRow[13]; // 管路座標Y
+
+		// column preprocessing
+		if (removeDate == "NaT") {
+			removeDate = "";
+		}
 
 		// get new data Id
 		var channelId = getNewChannelId();
