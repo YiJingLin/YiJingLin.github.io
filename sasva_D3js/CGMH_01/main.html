@@ -143,7 +143,6 @@
 
 	var nChannel;
 	var existCoordinates;
-	var overlappedCoordinates;
 	var channelTypeDict;
 
 	function addChannelIcon(channelId, side, channelType, removeDate, X, Y) {
@@ -225,7 +224,7 @@
 		var table = document.getElementById("table");
 		var newTableRow = document.createElement('tr');
 		newTableRow.id = "row_" + channelId;
-		
+		newTableRow.setAttribute("channeltype", channelType);
 		// var newIdCol = document.createElement('th');
 		// newIdCol.scope = "row";
 		// newIdCol.innerText = channelId;
@@ -334,14 +333,15 @@
 
 			// rows
 			var rows = document.getElementsByTagName("tr");
+			var tmpExistCoordinates = existCoordinates[coordinateCode]; // Set
 			for (var i =0; i< rows.length; i++){
-				rows[i].style.backgroundColor = "white";
-			}
-
-			for (var i =0; i<overlappedCoordinates[coordinateCode].length; i++){
-				var row_id = "row_" + overlappedCoordinates[coordinateCode][i]; 
-				var row = document.getElementById(row_id);
-				row.style.backgroundColor = "gray";
+				var tmpChannelType = parseInt(rows[i].getAttribute("channeltype"));
+				if (tmpExistCoordinates.has(tmpChannelType)) {
+					console.log(tmpChannelType);
+					rows[i].style.backgroundColor = "gray";
+				} else {
+					rows[i].style.backgroundColor = "white";
+				}
 			}
 			
 
@@ -360,25 +360,31 @@
 	}
 	
 
-	function checkAndAddChannelOverlapped(channelId, side, X, Y) {
+	function checkAndAddChannelOverlapped(channelType, removeDate, side, X, Y) {
+		// only check and add current installed channels
+		if (removeDate != "") {
+			return
+		}
+
 		var coordinateCode = 1000 * X + Y;
 		if (side == "反面") {
 			coordinateCode *= -1; // negative number
 		}
 		if (coordinateCode in existCoordinates) {
-			// coordinate not exist
-			if (!(coordinateCode in overlappedCoordinates)) {
-				// init overlapCoordinates list, for multiple row selected
-				overlappedCoordinates[coordinateCode] = [existCoordinates[coordinateCode]];
-
-				// init icon
-				addOverlappedChannelIcon(coordinateCode=coordinateCode, side=side, X=X, Y=Y);
+			// coordinate haven't been added before
+			if (!(channelType in existCoordinates[coordinateCode])) {
+				// add new channelType in to coordinate set
+				existCoordinates[coordinateCode].add(channelType);
+				// if first time overlap (two different channelType on same coordinate)
+				if (existCoordinates[coordinateCode].size == 2) {
+					addOverlappedChannelIcon(coordinateCode=coordinateCode, side=side, X=X, Y=Y);
+				}
 			}
-			overlappedCoordinates[coordinateCode].push(channelId);
 
 		} else {
 			// first time
-			existCoordinates[coordinateCode] = channelId;
+			existCoordinates[coordinateCode] = new Set();
+			existCoordinates[coordinateCode].add(channelType);
 		}
 	}
 
@@ -409,7 +415,7 @@
 		addChannelIcon(channelId = channelId, side=side, channelType=channelType, removeDate=removeDate, X=X, Y=Y);
 		addTableRow(channelId = channelId, channelType=channelType, typeName=typeName, channelText=channelText, startDate=startDate, removeDate=removeDate, day=day, nTime=nTime);
 		addChannelTypeDict(channelId=channelId, channelType=channelType);
-		checkAndAddChannelOverlapped(channelId=channelId, side=side, X=X, Y=Y);
+		checkAndAddChannelOverlapped(channelType=channelType, removeDate=removeDate, side=side, X=X, Y=Y);
 	}	
 
 	// render male/female/child body images 
@@ -445,7 +451,6 @@
 		//// parameters
 		nChannel = 0
 		existCoordinates = {};
-		overlappedCoordinates = {};
 		channelTypeDict = {};
 
 		//// UI 
@@ -517,7 +522,7 @@
 	var _testData_ = {'version': '1',
 		'rowCount': 12,
 		'availableRowCount': 12,
-		'data': [['成人', 'M', 3, '2020-07-29 21:07:00', 'NaT', 8,
+		'data': [['成人', 'M', 3, '2020-07-29 21:07:00', '2020-07-30 22:00:00', 8,
 				'PCVC LINE（CAVA LINE）（經皮植入靜脈導管）', '靜脈導管', 11.0, '右下肢', '正面', 1,
 				13, 30],
 				['成人', 'M', 3, '2020-07-30 22:10:00', 'NaT', 8,
