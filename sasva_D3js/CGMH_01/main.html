@@ -152,8 +152,8 @@
 		// Y (int): y/72
 
 		// if removed, there's no need to show icon
-		if (removeDate != "") {
-			return
+		if (removeDate != "NaT") {
+			return;
 		}
 
 		// get parent element
@@ -359,28 +359,57 @@
 		container.appendChild(imgTag);
 	}
 	
-
-	function checkAndAddChannelOverlapped(channelType, removeDate, side, X, Y) {
-		// only check and add current installed channels
-		if (removeDate != "") {
-			return
-		}
-
+	function getCoordinateCode(side, X, Y) {
 		var coordinateCode = 1000 * X + Y;
 		if (side == "反面") {
 			coordinateCode *= -1; // negative number
 		}
+		return coordinateCode;
+	}
+
+	function decodeCoordinateCode(coordinateCode) {
+		var side;
+		var X;
+		var Y;
+
+		// size
+		if (coordinateCode < 0) {
+			side = "反面";
+			coordinateCode *= -1; // to positive
+		} else {
+			side = "正面";
+		}
+
+		// X & Y
+		X = Math.floor(coordinateCode / 1000);
+		Y = coordinateCode % 1000;
+		
+		return [side, X, Y];
+	}
+
+	function checkOverlapped(dataRow) {
+		// extract values
+		var removeDate  = dataRow[4]; // 移除日期
+		var channelType = dataRow[8]; // 管路類別
+		var side		= dataRow[10]; // 人形圖位置：Front(正面)/Back(反面)
+		var X			= dataRow[12]; // 管路座標X
+		var Y			= dataRow[13]; // 管路座標Y
+
+		// only check and add current installed channels
+		if (removeDate != "NaT") {
+			console.log
+			return;
+		}
+
+		var coordinateCode = getCoordinateCode(side=side, X=X, Y=Y);
+		console.log(coordinateCode);
+
 		if (coordinateCode in existCoordinates) {
 			// coordinate haven't been added before
 			if (!(channelType in existCoordinates[coordinateCode])) {
 				// add new channelType in to coordinate set
 				existCoordinates[coordinateCode].add(channelType);
-				// if first time overlap (two different channelType on same coordinate)
-				if (existCoordinates[coordinateCode].size == 2) {
-					addOverlappedChannelIcon(coordinateCode=coordinateCode, side=side, X=X, Y=Y);
-				}
 			}
-
 		} else {
 			// first time
 			existCoordinates[coordinateCode] = new Set();
@@ -404,18 +433,24 @@
 		var Y			= dataRow[13]; // 管路座標Y
 
 		// column preprocessing
-		if (removeDate == "NaT") {
-			removeDate = "";
-		}
 
 		// get new data Id
 		var channelId = getNewChannelId();
 
-
-		addChannelIcon(channelId = channelId, side=side, channelType=channelType, removeDate=removeDate, X=X, Y=Y);
-		addTableRow(channelId = channelId, channelType=channelType, typeName=typeName, channelText=channelText, startDate=startDate, removeDate=removeDate, day=day, nTime=nTime);
+		// add mapping record for event listener usage
 		addChannelTypeDict(channelId=channelId, channelType=channelType);
-		checkAndAddChannelOverlapped(channelType=channelType, removeDate=removeDate, side=side, X=X, Y=Y);
+
+		// add to view : table
+		addTableRow(channelId=channelId, channelType=channelType, typeName=typeName, channelText=channelText, startDate=startDate, removeDate=removeDate, day=day, nTime=nTime);
+		
+		// add to view : icon
+		var coordinateCode = getCoordinateCode(side=side, X=X, Y=Y);
+		if (removeDate == "NaT") { // means still installed
+			if (existCoordinates[coordinateCode].size < 2) {
+				addChannelIcon(channelId = channelId, side=side, channelType=channelType, removeDate=removeDate, X=X, Y=Y);
+			}
+		}
+		
 	}	
 
 	// render male/female/child body images 
@@ -486,11 +521,29 @@
 			var sex 		= data.data[0][1]; //  性別：Male(M)/Female(F)
 			renderBodyImg(ageType=ageType, sex=sex);
 
+			// create overlap Dict first
+			for (var i = 0; i < data.data.length; i++) {
+				var dataRow = data.data[i];
+				checkOverlapped(dataRow);
+			}
+
 			// add channel icons and table rows 
 			for (var i = 0; i < data.data.length; i++) {
 				var dataRow = data.data[i];
 				addData(dataRow);
 			}
+
+			// add overlapped icons
+			Object.entries(existCoordinates).forEach(([coordinateCode, overlapChannelTypes]) => {
+				if (overlapChannelTypes.size > 1) {
+					var res = decodeCoordinateCode(coordinateCode);
+					var side = res[0];
+					var X = res[1];
+					var Y = res[2];
+					addOverlappedChannelIcon(coordinateCode=coordinateCode, side=side, X=X, Y=Y);
+				}
+			});
+			
 
 		} else {
 
