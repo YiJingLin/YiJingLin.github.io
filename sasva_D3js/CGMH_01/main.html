@@ -145,11 +145,16 @@
 	var existCoordinates;
 	var overlappedCoordinates;
 
-	function addChannelIcon(channelId, side, channelType, X, Y) { 
+	function addChannelIcon(channelId, side, channelType, removeDate, X, Y) {
 		// side (bool): front:True, back:False 
 		// channelType (Int): 
 		// X (int): x/40  
 		// Y (int): y/72
+
+		// if removed, there's no need to show icon
+		if (removeDate != "") {
+			return
+		}
 
 		// get parent element
 		if (side == "正面") {
@@ -189,7 +194,9 @@
 			}
 			var icon_id = "tag_" + channelId; 
 			var icon = document.getElementById(icon_id);
-			icon.style.opacity = "1.0";
+			if (icon != null) {
+				icon.style.opacity = "1.0";
+			}
 		});
 
 		// finally, append to container
@@ -266,7 +273,10 @@
 			}
 			var icon_id = "tag_" + channelId; 
 			var icon = document.getElementById(icon_id);
-			icon.style.opacity = "1.0";
+			if (icon != null) {
+				icon.style.opacity = "1.0";
+			}
+			
 		});
 
 		// append back to table
@@ -379,7 +389,7 @@
 		var channelId = getNewChannelId();
 
 
-		addChannelIcon(channelId = channelId, side=side, channelType=channelType, X=X, Y=Y);
+		addChannelIcon(channelId = channelId, side=side, channelType=channelType, removeDate=removeDate, X=X, Y=Y);
 		addTableRow(channelId = channelId, channelType=channelType, typeName=typeName, channelText=channelText, startDate=startDate, removeDate=removeDate, day=day, nTime=nTime);
 		checkAndAddChannelOverlapped(channelId=channelId, side=side, X=X, Y=Y);
 	}	
