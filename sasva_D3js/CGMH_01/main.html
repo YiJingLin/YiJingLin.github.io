@@ -119,28 +119,6 @@
 	    window.attachEvent("onmessage", onMessage);
 	}
 
-	// if (window.addEventListener) {
-	//     // For standards-compliant web browsers
-	//     window.addEventListener("message", onMessage, false);
-	// }
-	// else {
-	//     window.attachEvent("onmessage", onMessage);
-	// }
-	
-  	// function updateData(chartData){
-	// //   console.log(JSON.stringify(chartData));
-	//   console.log(JSON.stringify(chartData));
-	//   var output_div = document.getElementById('output_div');
-	//   output_div.innerHTML = JSON.stringify(chartData);
-	// }	
-
-
-	// d3.select("#tag_front_1")
-	// .attr("marginLeft", "10%")
-	// .attr("marginTop", "20%");
-
-	// d3.selectAll("div").selectAll("*").remove();
-
 	var nChannel;
 	var existCoordinates;
 	var channelTypeDict;
@@ -225,10 +203,6 @@
 		var newTableRow = document.createElement('tr');
 		newTableRow.id = "row_" + channelId;
 		newTableRow.setAttribute("channeltype", channelType);
-		// var newIdCol = document.createElement('th');
-		// newIdCol.scope = "row";
-		// newIdCol.innerText = channelId;
-		// newTableRow.appendChild(newIdCol);
 
 		var newIconCol = document.createElement('th');
 		newIconCol.scope = "row";
@@ -238,10 +212,6 @@
 		imgTag.style.width = "100%";
 		newIconCol.appendChild(imgTag);
 		newTableRow.appendChild(newIconCol);
-		
-		// var newTypeNameCol = document.createElement('td');
-		// newTypeNameCol.innerText = typeName;
-		// newTableRow.appendChild(newTypeNameCol);
 		
 		var newChannelTextCol = document.createElement('td');
 		newChannelTextCol.style.width = "30%"
@@ -558,23 +528,7 @@
 		
 	}
 
-
-	/* ================ test UI code ================ */
 	
-	
-
-	// tag icon
-	// addChannelIcon(channelId = 0, side="正面", channelType=1, X=10, Y=18);	
-	// addChannelIcon(channelId = 0, side="正面", channelType=1, X=30, Y=18);
-	// addChannelIcon(channelId = 0, side="反面", channelType=1, X=30, Y=18);
-	// addChannelIcon(channelId = 0, side="正面", channelType=1, X=0, Y=0);
-
-	// addChannelIcon(channelId=0, side="反面", channelType=11, X=0, Y=72);
-	// addChannelIcon(channelId=0, side="反面", channelType=11, X=40, Y=0);
-	// addChannelIcon(channelId=0, side="反面", channelType=11, X=0, Y=0);
-	// addChannelIcon(channelId=0, side="反面", channelType=11, X=40, Y=72);
-
-
 	// test data
 	var _testData_ = {'version': '1',
 		'rowCount': 12,
