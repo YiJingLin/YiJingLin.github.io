@@ -152,7 +152,7 @@
 		// Y (int): y/72
 
 		// if removed, there's no need to show icon
-		if (removeDate != "NaT") {
+		if (removeDate != ".") {
 			return;
 		}
 
@@ -253,7 +253,7 @@
 		newTableRow.appendChild(newStartDateCol);
 
 		var newRemoveDateCol = document.createElement('td');
-		if (removeDate == "NaT") {
+		if (removeDate == ".") {
 			newRemoveDateCol.innerText = "";
 		} else {
 			newRemoveDateCol.innerText = removeDate.substring(0, 16);
@@ -400,7 +400,7 @@
 		var Y			= dataRow[13]; // 管路座標Y
 
 		// only check and add current installed channels
-		if (removeDate != "NaT") {
+		if (removeDate != ".") {
 			console.log
 			return;
 		}
@@ -449,7 +449,7 @@
 		
 		// add to view : icon
 		var coordinateCode = getCoordinateCode(side=side, X=X, Y=Y);
-		if (removeDate == "NaT") { // means still installed
+		if (removeDate == ".") { // means still installed
 			if (existCoordinates[coordinateCode].size < 2) {
 				addChannelIcon(channelId = channelId, side=side, channelType=channelType, removeDate=removeDate, X=X, Y=Y);
 			}
